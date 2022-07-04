@@ -2,6 +2,7 @@ package com.example.groupplanstudy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("회원가입");
+        setTitle("로그인");
 
         Button btnRegister = findViewById(R.id.btnRegister);
         Button btnLogin = findViewById(R.id.btnLogin);
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                Intent intent = new Intent(getApplicationContext(), Register.class);
+                startActivity(intent);
             }
         });
         //로그인버튼
