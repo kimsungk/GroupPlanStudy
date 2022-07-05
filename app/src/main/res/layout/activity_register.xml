@@ -11,6 +11,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
         <TextView
@@ -18,8 +19,10 @@
             android:layout_height="wrap_content"
             android:text="Email"/>
         <EditText
-            android:layout_width="300dp"
+            android:id="@+id/editRegEmail"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
             android:layout_marginLeft="85dp"/>
     </LinearLayout>
 
@@ -27,6 +30,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -34,36 +38,46 @@
             android:gravity="center"
             android:text="닉네임"/>
         <EditText
-            android:layout_width="300dp"
+            android:id="@+id/editRegNickName"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
             android:layout_marginLeft="81dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password"/>
         <EditText
-            android:layout_width="300dp"
+            android:id="@+id/editRegPassword"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:inputType="textPassword"
             android:layout_marginLeft="57dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PasswordCheck"/>
         <EditText
-            android:layout_width="match_parent"
+            android:id="@+id/editRegPassCheck"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:inputType="textPassword"
             android:layout_marginLeft="18dp"/>
     </LinearLayout>
 
@@ -71,14 +85,17 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="자기소개 "/>
         <EditText
-            android:layout_width="300dp"
+            android:id="@+id/editRegMyIntro"
+            android:layout_width="290dp"
             android:layout_height="200dp"
+            android:background="@drawable/border"
             android:gravity="top"
             />
     </LinearLayout>
@@ -89,10 +106,12 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="right">
         <Button
+            android:id="@+id/btnRegister2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="가입하기"/>
         <Button
+            android:id="@+id/btnRegCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

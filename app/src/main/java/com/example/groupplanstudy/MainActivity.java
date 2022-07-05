@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.groupplanstudy.ui.home.HomeFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                 String id = editId.getText().toString();
                 String password = editPassword.getText().toString();
 
-
+                Intent intent = new Intent(getApplicationContext(), Home.class);
+                startActivity(intent);
             }
         });
         //구글로그인버튼

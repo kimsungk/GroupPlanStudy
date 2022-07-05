@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GroupPlanStudy</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_home">홈</string>
+    <string name="title_dashboard">마이학습</string>
+    <string name="title_notifications">학습타이머</string>
+    <string name="title_opengroup">오픈그룹</string>
 </resources>
