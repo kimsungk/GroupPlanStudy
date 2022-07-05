@@ -22,4 +22,10 @@
         android:name="com.example.groupplanstudy.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_opengroup"
+        android:name="com.example.groupplanstudy.ui.opengroup.dashboard.OpenGroupFragment"
+        android:label="@string/title_opengroup"
+        tools:layout="@layout/fragment_opengroup"/>
 </navigation>
