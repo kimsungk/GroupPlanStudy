@@ -16,8 +16,6 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        
-        setTitle("회원가입");
 
         editRegEmail = findViewById(R.id.editRegEmail);
         editRegNickName = findViewById(R.id.editRegNickName);
