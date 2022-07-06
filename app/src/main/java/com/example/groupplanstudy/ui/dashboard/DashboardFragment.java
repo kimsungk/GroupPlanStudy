@@ -174,7 +174,7 @@ public class DashboardFragment extends Fragment {
         catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }//
     }
 
     @SuppressLint("WrongConstant")
