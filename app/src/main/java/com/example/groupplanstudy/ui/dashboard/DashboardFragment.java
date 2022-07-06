@@ -158,7 +158,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    //저장삭제수정 sqlLite 로 변경
+    //저장삭제수정 sqlLite 로 변경1
     @SuppressLint("WrongConstant")
     public void removeDiary(String readDay)
     {
