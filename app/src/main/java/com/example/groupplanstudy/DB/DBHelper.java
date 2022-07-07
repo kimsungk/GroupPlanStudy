@@ -43,7 +43,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         sqLiteDatabase.close();
-
         return result;
     }
 
