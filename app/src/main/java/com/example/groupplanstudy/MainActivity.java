@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         sqLiteDatabase = dbHelper.getWritableDatabase();
         dbHelper.onUpgrade(sqLiteDatabase, 1,2);
 
-
+        
         Button btnRegister = findViewById(R.id.btnRegister);
         Button btnLogin = findViewById(R.id.btnLogin);
         ImageButton btnGoogleLogin = findViewById(R.id.btnGoogleLogin);
