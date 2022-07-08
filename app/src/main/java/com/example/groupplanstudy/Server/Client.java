@@ -8,10 +8,13 @@ public class Client {
 
     //
     public static Retrofit getClient(){
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.219.108:8866")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if(retrofit == null) {
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.45.243:8866")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
         return retrofit;
     }
 }
