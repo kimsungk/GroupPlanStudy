@@ -1,19 +1,18 @@
 package com.example.groupplanstudy.ui.dashboard;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.database.Cursor;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,12 +28,8 @@ import com.example.groupplanstudy.DB.DBHelper;
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.databinding.FragmentDashboardBinding;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
@@ -43,13 +37,16 @@ public class DashboardFragment extends Fragment {
 
     public String readDay = null;
     public CalendarView calendarView;
-    public Button upd_Btn, del_Btn, save_Btn;
+    public Button save_Btn;
     public TextView diaryTextView;
     public ListView listView;
     public EditText contextEditText;
     public Context context;
     public String uid = null;
     public ScrollView scrollView;
+    public ArrayAdapter adapter;
+    public AlertDialog dialog;
+    int selectedPos = -1;
 
     SQLiteDatabase sqLiteDatabase;
 
@@ -62,7 +59,6 @@ public class DashboardFragment extends Fragment {
         View root = binding.getRoot();
 
         context = container.getContext();
-
         DBHelper dbHelper = new DBHelper(context);
 
         calendarView = root.findViewById(R.id.calendarView);
@@ -72,8 +68,17 @@ public class DashboardFragment extends Fragment {
         scrollView = root.findViewById(R.id.scrollView);
 
         save_Btn = root.findViewById(R.id.save_Btn);
-        del_Btn = root.findViewById(R.id.del_Btn);
-        upd_Btn = root.findViewById(R.id.upd_Btn);
+
+        Calendar cal = Calendar.getInstance();
+        int cYear = cal.get(Calendar.YEAR);
+        int cMONTH = cal.get(Calendar.MONTH)+1;
+        int cDAY = cal.get(Calendar.DAY_OF_MONTH);
+
+        readDay = cYear+"-"+cMONTH+"-"+cDAY;
+
+        Log.v("날짜:",readDay);
+
+        checkDay(readDay);
 
         //캘린더 선택
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener()
@@ -82,86 +87,123 @@ public class DashboardFragment extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
             {
                 readDay = year+"-"+(month+1)+"-"+dayOfMonth;
-                diaryTextView.setVisibility(View.VISIBLE);
-                save_Btn.setVisibility(View.VISIBLE);
-                contextEditText.setVisibility(View.VISIBLE);
-
-                listView.setVisibility(View.INVISIBLE);
-                upd_Btn.setVisibility(View.INVISIBLE);
-                del_Btn.setVisibility(View.INVISIBLE);
-
                 diaryTextView.setText(readDay);
                 contextEditText.setText("");
-                
+
                 //데이터 확인
                 checkDay(readDay);
-
                 setListViewHeightBasedOnChildren(listView);
 
                 save_Btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //값설정
-                        String uid = "1";
+                        String uid = "1"; // userid 정해지면 설정
                         String date = readDay;
                         String content = contextEditText.getText().toString();
 
                         dbHelper.insert(uid,date,content);
                         Toast.makeText(getContext(),"저장되었습니다", Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
+                        checkDay(readDay);
+                        setListViewHeightBasedOnChildren(listView);
                     }
                 });
             }
         });
-
-//        listView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                scrollView.requestDisallowInterceptTouchEvent(true);
-//                return false;
-//            }
-//        });
-
         return root;
     }
 
     //날짜 체크
     public void checkDay(String readDay)
     {
+        diaryTextView.setText(readDay);
 
         String getReadDay = readDay;
-        ArrayList<String> resultList = null;
+        ArrayList<String> resultList;//
         DBHelper dbHelper = new DBHelper(context);
-
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         //날짜 체크비교 데이터 유무 판결
 
         listView.setVisibility(View.VISIBLE);
         uid = "1";
         //textview2에는 저장되어있는 content 값넣기
         resultList = dbHelper.getResult(getReadDay,uid);
-        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, resultList);
-
+        adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, resultList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        upd_Btn.setVisibility(View.VISIBLE);
-        del_Btn.setVisibility(View.VISIBLE);
 
-        //수정할경우
-        upd_Btn.setOnClickListener(new View.OnClickListener() {
+        //클릭해서 수정
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                selectedPos = position;
+
+                AlertDialog.Builder alertDig = new AlertDialog.Builder(view.getContext());
+
+                final EditText editText = new EditText(context);
+                editText.setText(resultList.get(selectedPos));
+
+                alertDig.setMessage("수정하시겠습니까?")
+                .setView(editText)
+                .setPositiveButton("수정", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //수정하기
+                        String newContent = editText.getText().toString();//수정할 텍스트 값 넣기
+                        
+                        dbHelper.update(resultList.get(selectedPos),"1",readDay, newContent);
+                        adapter.notifyDataSetChanged();
+                        dialogInterface.dismiss();
+                        checkDay(readDay);
+                        setListViewHeightBasedOnChildren(listView);
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDig.show();
+
             }
         });
 
-        //삭제할경우
-        del_Btn.setOnClickListener(new View.OnClickListener() {
+        //길게클릭해서 삭제
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
             @Override
-            public void onClick(View view) {
-                dbHelper.delete(uid, readDay);
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                selectedPos = position;
+
+                AlertDialog.Builder alertDig = new AlertDialog.Builder(view.getContext());
+                alertDig.setMessage("삭제하시겠습니까?")
+                .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //삭제하기
+                        dbHelper.delete("1", readDay, resultList.get(selectedPos));
+                        adapter.notifyDataSetChanged();
+                        dialogInterface.dismiss();
+                        checkDay(readDay);
+                        setListViewHeightBasedOnChildren(listView);
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //취소하기
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDig.show();
+                return true;
             }
         });
-
+        setListViewHeightBasedOnChildren(listView);
     }
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -182,7 +224,6 @@ public class DashboardFragment extends Fragment {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
-
 
     @Override
     public void onDestroyView() {

@@ -48,18 +48,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //수정
     //uid는 넣을지말지 고려해서 확인할것
-    public void update(String content, String uid, String date){
+    public void update(String content, String uid, String date, String newContent){
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("UPDATE myDiary set content=" +
-                "'"+content+"' where userid='"+uid+"' and diaryDate='"+date+"'");
+                "'"+newContent+"' where userid='"+uid+"' " +
+                "and diaryDate='"+date+"' " +
+                "and content='"+content+"'");
         sqLiteDatabase.close();
     }
 
     //삭제
-    public void delete(String uid, String date){
+    public void delete(String uid, String date, String content){
+        Log.v("텍스트값확인 : ",content);
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("DELETE from myDiary " +
-                "where userid='"+uid+"' and diaryDate='"+date+"'");
+                "where userid='"+uid+"' " +
+                "and diaryDate='"+date+"' " +
+                "and content='"+content+"'");
+        sqLiteDatabase.close();
     }
 
 
