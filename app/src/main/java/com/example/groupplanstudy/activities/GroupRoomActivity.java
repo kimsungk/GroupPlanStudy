@@ -17,7 +17,7 @@ public class GroupRoomActivity extends AppCompatActivity {
 //        Toolbar grouproom_toolbar = getSupportActionBar(); //제목줄 객체 얻어오기
 //
 //        grouproom_toolbar.setDisplayHomeAsUpEnabled(true);
-        //rkawk123
+        //rk
 
     }
 }
