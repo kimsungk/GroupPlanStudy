@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:id="@+id/opengroup_item_linearlayout"
+    android:layout_height="100dp">
+
+    <TextView
+        android:id="@+id/opengroup_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="5dp"
+        android:text="벡엔드"/>
+
+    <TextView
+        android:id="@+id/opengroup_item_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginBottom="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="opengroup_item_introopengroup_item_introopengroup_item_introopengroup_item_intro"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/opengroup_item_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#9121F3"
+            android:layout_marginRight="20dp"
+            android:text="nickname"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="멤버 정원 "
+            />
+        <TextView
+            android:id="@+id/opengroup_item_mem_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="5"/>
+    </LinearLayout>
+
+</LinearLayout>
