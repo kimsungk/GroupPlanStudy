@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/grouproom_top_menu_member"
+        android:title="참여멤버"></item>
+
+    <item
+        android:id="@+id/grouproom_top_menu_calendar"
+        android:title="캘린더"></item>
+</menu>
