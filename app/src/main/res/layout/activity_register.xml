@@ -95,6 +95,7 @@
             android:id="@+id/editRegMyIntro"
             android:layout_width="290dp"
             android:layout_height="200dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/border"
             android:gravity="top"
             />

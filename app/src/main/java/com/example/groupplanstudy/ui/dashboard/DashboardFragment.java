@@ -42,7 +42,7 @@ public class DashboardFragment extends Fragment {
     public ListView listView;
     public EditText contextEditText;
     public Context context;
-    public String uid = null;
+    public long uid;
     public ScrollView scrollView;
     public ArrayAdapter adapter;
     public AlertDialog dialog;
@@ -98,7 +98,7 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //값설정
-                        String uid = "1"; // userid 정해지면 설정
+                        long uid = 1; // userid 정해지면 설정
                         String date = readDay;
                         String content = contextEditText.getText().toString();
 
@@ -126,7 +126,7 @@ public class DashboardFragment extends Fragment {
         //날짜 체크비교 데이터 유무 판결
 
         listView.setVisibility(View.VISIBLE);
-        uid = "1";
+        uid = (long)1;//값 정해지면 넣어주기
         //textview2에는 저장되어있는 content 값넣기
         resultList = dbHelper.getResult(getReadDay,uid);
         adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, resultList);
@@ -153,7 +153,7 @@ public class DashboardFragment extends Fragment {
                         //수정하기
                         String newContent = editText.getText().toString();//수정할 텍스트 값 넣기
                         
-                        dbHelper.update(resultList.get(selectedPos),"1",readDay, newContent);
+                        dbHelper.update(resultList.get(selectedPos),1,readDay, newContent);
                         adapter.notifyDataSetChanged();
                         dialogInterface.dismiss();
                         checkDay(readDay);
@@ -185,7 +185,7 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //삭제하기
-                        dbHelper.delete("1", readDay, resultList.get(selectedPos));
+                        dbHelper.delete(1, readDay, resultList.get(selectedPos));
                         adapter.notifyDataSetChanged();
                         dialogInterface.dismiss();
                         checkDay(readDay);

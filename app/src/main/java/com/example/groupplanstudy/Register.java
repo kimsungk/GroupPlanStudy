@@ -3,14 +3,30 @@ package com.example.groupplanstudy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.groupplanstudy.Server.Adapter.UserAdapter;
+import com.example.groupplanstudy.Server.Client;
+import com.example.groupplanstudy.Server.DTO.User;
+import com.example.groupplanstudy.Server.Service.LoginService;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class Register extends AppCompatActivity {
 
     EditText editRegEmail,editRegNickName,editRegPassword,editRegPassCheck,editRegMyIntro;
+
+    private Retrofit retrofit;
+    private UserAdapter userAdapter;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +88,37 @@ public class Register extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                final String email = editRegEmail.getText().toString();
+                final String introduce = editRegMyIntro.getText().toString();
+                final String nickname = editRegNickName.getText().toString();
+                final String password = editRegPassword.getText().toString();
+
+                user = new User();
+
+                user.setEmail(email);
+                user.setIntroduce(introduce);
+                user.setNickname(nickname);
+                user.setPassword(password);
+
+                LoginService loginService
+                        = Client.getClient().create(LoginService.class);
+
+                Call<ResponseBody> call =loginService.createUser(user);
+
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("message : ",t.getMessage());
+                    }
+                });
             }
         });
-
 
 
         btnRegCancel.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +127,6 @@ public class Register extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
 
     }
 }

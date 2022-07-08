@@ -15,11 +15,11 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase sqLiteDatabase;
 
     public DBHelper(@Nullable Context context) {
-        super(context, "myDB", null, 1);
+        super(context, "myDiary", null, 1);
     }
 
     //추가 마이학습 캘린더 데이터 입력
-    public void insert(String userid, String date, String content){
+    public void insert(long userid, String date, String content){
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("Insert into myDiary (userid,diaryDate,content) values" +
                 "('"+userid+"','"+date+"','"+content+"')");
@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //테이블 조회
-    public ArrayList<String> getResult(String date, String uid){
+    public ArrayList<String> getResult(String date, long uid){
         sqLiteDatabase = getReadableDatabase();
         ArrayList<String> result = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //수정
     //uid는 넣을지말지 고려해서 확인할것
-    public void update(String content, String uid, String date, String newContent){
+    public void update(String content, long uid, String date, String newContent){
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("UPDATE myDiary set content=" +
                 "'"+newContent+"' where userid='"+uid+"' " +
@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //삭제
-    public void delete(String uid, String date, String content){
+    public void delete(long uid, String date, String content){
         Log.v("텍스트값확인 : ",content);
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.execSQL("DELETE from myDiary " +
@@ -75,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //테이블 없을경우 생성
         sqLiteDatabase.execSQL("create table if not exists " +
                 "myDiary(id INTEGER primary key AUTOINCREMENT, " +
-                "userid varchar, " +
+                "userid bigint, " +
                 "diaryDate char(10), " +
                 "content varchar(500));"
         );
