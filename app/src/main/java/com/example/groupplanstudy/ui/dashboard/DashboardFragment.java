@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groupplanstudy.DB.DBHelper;
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.databinding.FragmentDashboardBinding;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
+
+
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

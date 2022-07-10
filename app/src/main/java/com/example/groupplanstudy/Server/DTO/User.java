@@ -1,7 +1,7 @@
 package com.example.groupplanstudy.Server.DTO;
 
 public class User {
-    private Long uid;
+    private long uid;
     private String email;
     private String password;
     private String introduce;
@@ -17,11 +17,11 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Long getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(Long uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 

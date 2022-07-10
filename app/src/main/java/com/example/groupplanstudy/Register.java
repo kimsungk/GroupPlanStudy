@@ -109,7 +109,11 @@ public class Register extends AppCompatActivity {
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                        if (response.isSuccessful()){
+                            finish();
+                            Toast.makeText(getApplicationContext(),"정상적으로회원가입이 완료되었습니다.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override

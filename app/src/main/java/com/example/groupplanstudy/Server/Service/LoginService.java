@@ -1,5 +1,6 @@
 package com.example.groupplanstudy.Server.Service;
 
+import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.User;
 
 import okhttp3.ResponseBody;
@@ -25,4 +26,8 @@ public interface LoginService {
     //삭제
     @DELETE("api/accounts/{id}")
     Call<ResponseBody> deleteUser(@Path("id") Long uid);
+
+    //로그인
+    @POST("api/accounts/login")
+    Call<APIMessage> loginUser(@Body User user);
 }
