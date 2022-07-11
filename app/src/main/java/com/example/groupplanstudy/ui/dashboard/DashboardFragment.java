@@ -50,7 +50,6 @@ public class DashboardFragment extends Fragment {
     public long userid = 0;
     public ScrollView scrollView;
     public ArrayAdapter adapter;
-    public AlertDialog dialog;
     int selectedPos = -1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
