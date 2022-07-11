@@ -6,16 +6,20 @@
     android:layout_gravity="center" >
 
     <TextView
+        android:id="@+id/groupqna_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="감자"
         android:textSize="18sp"
-        android:textStyle="bold"></TextView>
+        android:textStyle="bold"
+        android:layout_gravity="center"></TextView>
 
     <TextView
+        android:id="@+id/groupqna_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="감자"></TextView>
+        android:text="감자"
+        android:layout_gravity="center"></TextView>
 
 
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.activities.GroupMemberActivity;
+import com.example.groupplanstudy.activities.GroupRoomActivity;
 
 import java.util.List;
 
@@ -55,10 +56,13 @@ public class OpenGroupAdapter extends RecyclerView.Adapter<OpenGroupAdapter.Open
                 mContext = view.getContext();
 
                 // go to Group Room
+                Intent intent = new Intent(mContext, GroupRoomActivity.class);
+                intent.putExtra("grId", groupRoomDto.getGrId());
+                mContext.startActivity(intent);
 
                 //temp
-                Intent intent= new Intent(mContext, GroupMemberActivity.class);
-                mContext.startActivity(intent);
+//                Intent intent= new Intent(mContext, GroupMemberActivity.class);
+//                mContext.startActivity(intent);
 
             }
         });
