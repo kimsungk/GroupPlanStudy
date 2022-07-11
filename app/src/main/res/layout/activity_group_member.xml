@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:id="@+id/applymember_linearLayout"
         android:layout_margin="5dp">
 
         <LinearLayout
@@ -18,6 +19,7 @@
             android:layout_height="wrap_content"
             >
             <TextView
+                android:id="@+id/group_apply_member_textview_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신청 멤버"
@@ -39,7 +41,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
+        <View
+            android:id="@+id/applymember_view"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#dddddd"/>
     </LinearLayout>
+
 
 
 
@@ -73,7 +81,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_member_recyclerview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
 

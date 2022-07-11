@@ -5,6 +5,7 @@ public class GroupMemberDto
     private long grId;
     private long uid;
     private String name;
+    private String intro;
     private GroupRole role;
 
     public GroupMemberDto() {
@@ -15,6 +16,14 @@ public class GroupMemberDto
         this.uid = uid;
         this.name = name;
         this.role = role;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public long getGrId() {

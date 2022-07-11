@@ -10,4 +10,7 @@ public interface GroupMemberService
 {
     @GET("api/groupmember/applyMembers/{grId}")
     Call<APIMessage> getApplyMember(@Path("grId") long grId);
+
+    @GET("api/groupmember/groupMembers/{grId}")
+    Call<APIMessage> getGroupMember(@Path("grId") long grId);
 }
