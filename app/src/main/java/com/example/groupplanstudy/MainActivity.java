@@ -1,14 +1,11 @@
 package com.example.groupplanstudy;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +16,10 @@ import android.widget.Toast;
 import com.example.groupplanstudy.DB.DBHelper;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
+import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.LoginService;
-import com.example.groupplanstudy.ui.home.HomeFragment;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,16 +31,17 @@ public class MainActivity extends AppCompatActivity {
     //내부클래스 MyDBHelper 는 DDL 작업(테이블 생성 등)을 수행하고
     //sqLiteDatabase DML 작업을 수행함
     DBHelper dbHelper = new DBHelper(this);
+    private Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
 
         //DB쓰기권한 업데이트
         sqLiteDatabase = dbHelper.getWritableDatabase();
-        dbHelper.onUpgrade(sqLiteDatabase, 1,2);
-
         
         Button btnRegister = findViewById(R.id.btnRegister);
         Button btnLogin = findViewById(R.id.btnLogin);
@@ -88,11 +85,14 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("APIMessage",response.body().getMessage());
                                 Log.d("APIMessage",response.body().getData().toString());
                                 Intent intent = new Intent(getApplicationContext(), Home.class);
+
                                 APIMessage apiMessage = new APIMessage();
+
                                 apiMessage.setMessage(response.body().getMessage());
                                 apiMessage.setData(response.body().getData());
 
-                                intent.putExtra("user", apiMessage);
+                                PreferenceManager.setString(mContext,"user",apiMessage.getData().toString());
+
                                 startActivity(intent);
                                 //데이터 넘기기
                             }
@@ -122,5 +122,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 }
