@@ -26,8 +26,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groupplanstudy.DB.DBHelper;
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.databinding.FragmentDashboardBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +47,7 @@ public class DashboardFragment extends Fragment {
     public ListView listView;
     public EditText contextEditText;
     public Context context;
-    public long uid;
+    public long userid = 0;
     public ScrollView scrollView;
     public ArrayAdapter adapter;
     public AlertDialog dialog;
@@ -79,6 +83,15 @@ public class DashboardFragment extends Fragment {
 
         checkDay(readDay);
 
+        String text = PreferenceManager.getString(context, "user");
+        try {
+            JSONObject jsonObject = new JSONObject(text);
+            userid = jsonObject.getLong("uid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("유저id",String.valueOf(userid));
+
         //캘린더 선택
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener()
         {
@@ -97,11 +110,10 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //값설정
-                        long uid = 1; // userid 정해지면 설정
                         String date = readDay;
                         String content = contextEditText.getText().toString();
 
-                        dbHelper.insert(uid,date,content);
+                        dbHelper.insert(userid,date,content);
                         Toast.makeText(getContext(),"저장되었습니다", Toast.LENGTH_SHORT).show();
                         adapter.notifyDataSetChanged();
                         checkDay(readDay);
@@ -125,9 +137,8 @@ public class DashboardFragment extends Fragment {
         //날짜 체크비교 데이터 유무 판결
 
         listView.setVisibility(View.VISIBLE);
-        uid = (long)1;//값 정해지면 넣어주기
         //textview2에는 저장되어있는 content 값넣기
-        resultList = dbHelper.getResult(getReadDay,uid);
+        resultList = dbHelper.getResult(getReadDay,userid);
         adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, resultList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -152,7 +163,7 @@ public class DashboardFragment extends Fragment {
                         //수정하기
                         String newContent = editText.getText().toString();//수정할 텍스트 값 넣기
                         
-                        dbHelper.update(resultList.get(selectedPos),1,readDay, newContent);
+                        dbHelper.update(resultList.get(selectedPos),userid,readDay, newContent);
                         adapter.notifyDataSetChanged();
                         dialogInterface.dismiss();
                         checkDay(readDay);
@@ -184,7 +195,7 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //삭제하기
-                        dbHelper.delete(1, readDay, resultList.get(selectedPos));
+                        dbHelper.delete(userid, readDay, resultList.get(selectedPos));
                         adapter.notifyDataSetChanged();
                         dialogInterface.dismiss();
                         checkDay(readDay);
