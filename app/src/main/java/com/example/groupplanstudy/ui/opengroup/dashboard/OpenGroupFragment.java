@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.Adapter.OpenGroupAdapter;
+import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.Service.OpenGroupService;
@@ -80,10 +81,12 @@ public class OpenGroupFragment extends Fragment {
 
     private void initRetrofit()
     {
-        retrofit= new Retrofit.Builder()
-                .baseUrl("http://192.168.45.243:8866")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+//        retrofit= new Retrofit.Builder()
+//                .baseUrl("http://192.168.45.243:8866")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+        retrofit = Client.getClient();
+
         openGroupService= retrofit.create(OpenGroupService.class);
     }
 
