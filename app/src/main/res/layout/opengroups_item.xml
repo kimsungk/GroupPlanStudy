@@ -2,9 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_margin="20dp"
+    android:layout_margin="5dp"
     android:id="@+id/opengroup_item_linearlayout"
-    android:layout_height="100dp">
+    android:layout_height="120dp"
+    android:background="@drawable/shade">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="7dp"
+        >
 
     <TextView
         android:id="@+id/opengroup_item_title"
@@ -49,5 +57,5 @@
             android:layout_height="wrap_content"
             android:hint="5"/>
     </LinearLayout>
-
+    </LinearLayout>
 </LinearLayout>

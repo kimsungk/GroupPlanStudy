@@ -1,31 +1,23 @@
-package com.example.groupplanstudy.ui.opengroup.dashboard;
+package com.example.groupplanstudy.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.appcompat.widget.SearchView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.Adapter.OpenGroupAdapter;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.Service.OpenGroupService;
-import com.example.groupplanstudy.activities.OpenGroupSearchedActivity;
-import com.example.groupplanstudy.databinding.FragmentOpengroupBinding;
 
 import org.modelmapper.ModelMapper;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,47 +27,39 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OpenGroupFragment extends Fragment {
-
-    private FragmentOpengroupBinding binding;
-
+public class OpenGroupSearchedActivity extends AppCompatActivity {
     private SearchView searchView;
     private RecyclerView recyclerView;
 
     private Retrofit retrofit;
     private OpenGroupService openGroupService;
+
     private List<GroupRoomDto> groupRoomDtos;
     private OpenGroupAdapter openGroupAdapter;
 
     private LinearLayoutManager linearLayoutManager;
-    private Context context;
 
     private ModelMapper modelMapper = new ModelMapper();
+    private String query="";
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        OpenGroupViewModel openGroupViewModel =
-                new ViewModelProvider(this).get(OpenGroupViewModel.class);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_open_group_searched);
 
-        binding = FragmentOpengroupBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        searchView = findViewById(R.id.opengroupsearched_search_view);
+        recyclerView = findViewById(R.id.opengroupsearched_recyclerview);
 
-//        final TextView textView = binding.textOpengroup;
-//        openGroupViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        Intent intent = getIntent();
 
-        searchView = root.findViewById(R.id.opengroup_search_view);
-        recyclerView = root.findViewById(R.id.opengroup_recyclerview);
-        context = root.getContext();
-
+        query = intent.getStringExtra("query");
+        searchView.setQuery(query,true);
 
         initRetrofit();
 
-        //레트로핏으로 데이터 가져오기
         getOpenGroupsFromServer();
 
         doSeachOpenGroup();
-
-        return root;
     }
 
     private void initRetrofit()
@@ -89,16 +73,16 @@ public class OpenGroupFragment extends Fragment {
 
     private void setRecyclerView(List<GroupRoomDto> groupRoomDtos)
     {
-        linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        openGroupAdapter= new OpenGroupAdapter(context,groupRoomDtos);
+        openGroupAdapter= new OpenGroupAdapter(this,groupRoomDtos);
         recyclerView.setAdapter(openGroupAdapter);
     }
 
     private void getOpenGroupsFromServer()
     {
-        Call<APIMessage> openGroupCall= openGroupService.getGroupRooms();
+        Call<APIMessage> openGroupCall= openGroupService.getGroupRoomsByTitle(query);
         openGroupCall.enqueue(new Callback<APIMessage>() {
             @Override
             public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
@@ -136,8 +120,9 @@ public class OpenGroupFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 Log.d("search :" , query);
                 // call OpenGroupSearchedActivity
-                Intent intent = new Intent(getActivity(), OpenGroupSearchedActivity.class);
+                Intent intent = new Intent(OpenGroupSearchedActivity.this, OpenGroupSearchedActivity.class);
                 intent.putExtra("query", query);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return false;
             }
@@ -147,12 +132,5 @@ public class OpenGroupFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }
