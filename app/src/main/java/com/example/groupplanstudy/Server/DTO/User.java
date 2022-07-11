@@ -17,6 +17,14 @@ public class User {
         this.nickname = nickname;
     }
 
+    public User(long uid, String email, String password, String introduce, String nickname) {
+        this.uid = uid;
+        this.email = email;
+        this.password = password;
+        this.introduce = introduce;
+        this.nickname = nickname;
+    }
+
     public long getUid() {
         return uid;
     }

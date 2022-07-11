@@ -21,11 +21,11 @@ public interface LoginService {
 
     //수정
     @PUT("api/accounts/{id}")
-    Call<ResponseBody> updateUser(@Body User user, @Path("id") Long uid);
+    Call<APIMessage> updateUser(@Body User user, @Path("id") long uid);
 
     //삭제
     @DELETE("api/accounts/{id}")
-    Call<ResponseBody> deleteUser(@Path("id") Long uid);
+    Call<ResponseBody> deleteUser(@Path("id") long uid);
 
     //로그인
     @POST("api/accounts/login")

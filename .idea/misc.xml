@@ -9,12 +9,18 @@
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.19" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.19" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/drawable/rectangle.xml" value="0.1975" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/drawable/textviewrectangle.xml" value="0.1975" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_group_room.xml" value="0.25679347826086957" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_login.xml" value="0.3179347826086957" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_main2.xml" value="0.33" />
-        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_register.xml" value="0.33" />
-        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_my_page.xml" value="0.3179347826086957" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_open_group_searched.xml" value="0.3179347826086957" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/activity_update_user.xml" value="0.3179347826086957" />
+        <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/fragment_dashboard.xml" value="0.22" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/fragment_dashboard2.xml" value="0.40851449275362317" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/fragment_home.xml" value="0.3804347826086957" />
         <entry key="..\:/Users/dlsxj/Deskto/ITSutdy/GroupPlanStudy/app/src/main/res/layout/fragment_notifications.xml" value="0.3804347826086957" />
