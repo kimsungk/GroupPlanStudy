@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.dashboard.DashboardFragment">
+    tools:context=".ui.dashboard.DashboardFragment"
+    android:layout_marginBottom="70dp"
+    >
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/opengroup_search_view"
@@ -14,14 +16,18 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:iconifiedByDefault="false"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         app:queryHint="찾고 싶은 방제목을 입력하세요." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/opengroup_recyclerview"
-        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         />
 
 
