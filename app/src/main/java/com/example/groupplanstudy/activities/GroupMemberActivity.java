@@ -4,21 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.Adapter.ApplyMemberAdapter;
 import com.example.groupplanstudy.Server.Adapter.GroupMemberAdapter;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
+import com.example.groupplanstudy.Server.DTO.ApplyMemberDto;
 import com.example.groupplanstudy.Server.DTO.GroupMemberDto;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
+import com.example.groupplanstudy.Server.Service.ApplyMemberService;
 import com.example.groupplanstudy.Server.Service.GroupMemberService;
 import com.google.gson.Gson;
 
@@ -39,8 +45,6 @@ public class GroupMemberActivity extends AppCompatActivity {
     // Group Room Id
     private long grId;
 
-    private View viewApplyMember;
-    private TextView tvApplyMemberTitle;
     private TextView tvApplyMemberCount, tvGroupMemberCount;
     private RecyclerView recyclerViewApplyMember, recyclerViewGroupMember;
     private LinearLayout linearLayoutApplyMember;
@@ -51,24 +55,24 @@ public class GroupMemberActivity extends AppCompatActivity {
     private Retrofit retrofit;
 
     private GroupMemberService groupMemberService;
+    private ApplyMemberService applyMemberService;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private List<User> userDtos;
     private List<GroupMemberDto> groupMemberDtos;
 
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_member);
 
+        mContext= getApplicationContext();
+
         linearLayoutApplyMember= findViewById(R.id.applymember_linearLayout);
         linearLayoutApplyMember.setVisibility(View.GONE);
-
-        viewApplyMember= findViewById(R.id.applymember_view);
-
-        tvApplyMemberTitle= findViewById(R.id.group_apply_member_textview_title);
 
         recyclerViewApplyMember= findViewById(R.id.group_apply_member_recyclerview);
         recyclerViewGroupMember= findViewById(R.id.group_member_recyclerview);
@@ -89,9 +93,11 @@ public class GroupMemberActivity extends AppCompatActivity {
     private boolean isReader()
     {
         boolean result=true;
+
         Gson gson = new Gson();
         String text= PreferenceManager.getString(getApplicationContext(), "user");
 
+        Log.d("json: ", text);
         Log.d("json: ", text.toString());
         User user =new User();
 //        Log.d("userdto: ", userdto.getUid()+"");
@@ -119,6 +125,7 @@ public class GroupMemberActivity extends AppCompatActivity {
         retrofit = Client.getClient();
 
         groupMemberService= retrofit.create(GroupMemberService.class);
+        applyMemberService= retrofit.create(ApplyMemberService.class);
     }
 
     private void setApplyMemberAndRecyclerView(List<User> userDtos)
@@ -128,10 +135,103 @@ public class GroupMemberActivity extends AppCompatActivity {
         linearLayoutApplyMemberManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerViewApplyMember.setLayoutManager(linearLayoutApplyMemberManager);
 
-        applyMemberAdapter= new ApplyMemberAdapter(this,userDtos);
+        applyMemberAdapter= new ApplyMemberAdapter(this,userDtos,grId);
         recyclerViewApplyMember.setAdapter(applyMemberAdapter);
 
         tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
+
+        adapterOnClick();
+    }
+
+    // allow ApplyMember
+    private void adapterOnClick()
+    {
+        applyMemberAdapter.setOnItemClickListener(new ApplyMemberAdapter.OnItemClickListener() {
+            @Override
+            public void onAllowClick(ApplyMemberDto applyMemberDto, int pos) {
+                Call<APIMessage> allowMemberCall = applyMemberService.allowGroupMember(applyMemberDto);
+                allowMemberCall.enqueue(new Callback<APIMessage>() {
+                    @Override
+                    public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+                        if(response.isSuccessful())
+                        {
+                            APIMessage apiMessage= response.body();
+                            String message = apiMessage.getMessage();
+                            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+
+                            // remove Apply Member to list
+                            applyMemberAdapter.removeApplyMemberItem(pos);
+
+                            // 후추 서버에서 가져오는거 예정
+//                            GroupMemberDto groupMemberDto= null;
+//                            groupMemberAdapter.addGroupMemberItem(groupMemberDto);
+
+                            tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
+
+//                            Intent intent= new Intent(mContext, GroupMemberActivity.class);
+//                            intent.putExtra("grId", grId);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            mContext.startActivity(intent);
+                        }else{
+                            Log.d("result","실패");
+                            Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<APIMessage> call, Throwable t) {
+                        Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onRefuseClick(ApplyMemberDto applyMemberDto, int pos) {
+
+                AlertDialog.Builder alertDig = new AlertDialog.Builder(GroupMemberActivity.this);
+                alertDig.setMessage("삭제하시겠습니까?").setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //삭제하기
+
+                                Call<APIMessage> refuseMemberCall = applyMemberService.refuseGroupMember(applyMemberDto);
+                                refuseMemberCall.enqueue(new Callback<APIMessage>() {
+                                    @Override
+                                    public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+                                        if(response.isSuccessful())
+                                        {
+                                            APIMessage apiMessage= response.body();
+                                            String message = apiMessage.getMessage();
+                                            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+
+                                            applyMemberAdapter.removeApplyMemberItem(pos);
+                                            tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
+                                        }else{
+                                            Log.d("result","실패");
+                                            Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<APIMessage> call, Throwable t) {
+                                        Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }// 승인 거절 서버 통신
+
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //취소하기
+                                dialogInterface.dismiss();
+                            }
+                        });
+                alertDig.show();
+
+
+            }
+        });
     }
 
     private void setGroupMemberRecyclerView(List<GroupMemberDto> groupMemberDtos)
@@ -168,7 +268,7 @@ public class GroupMemberActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<APIMessage> call, Throwable t) {
-                Log.d("resultag","실패: "+t.getMessage());
+                Log.d("result","실패: "+t.getMessage());
 
             }
         });

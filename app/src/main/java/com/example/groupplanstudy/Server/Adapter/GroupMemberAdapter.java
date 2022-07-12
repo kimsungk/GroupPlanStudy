@@ -24,6 +24,12 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         this.context = context;
     }
 
+    //추가
+    public void addGroupMemberItem(GroupMemberDto groupMemberDto){
+        groupMemberDtos.add(groupMemberDto);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public GroupMemberHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,6 +45,8 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         holder.tvRole.setText(groupMemberDto.getRole()+"");
         holder.tvIntro.setText(groupMemberDto.getIntro());
     }
+
+
 
     @Override
     public int getItemCount() {
