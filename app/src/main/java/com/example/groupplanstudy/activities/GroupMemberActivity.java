@@ -22,6 +22,7 @@ import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.ApplyMemberDto;
 import com.example.groupplanstudy.Server.DTO.GroupMemberDto;
+import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.ApplyMemberService;
@@ -49,8 +50,8 @@ public class GroupMemberActivity extends AppCompatActivity {
     private RecyclerView recyclerViewApplyMember, recyclerViewGroupMember;
     private LinearLayout linearLayoutApplyMember;
     private LinearLayoutManager linearLayoutApplyMemberManager, linearLayoutGroupMemberManager;
-    private ApplyMemberAdapter applyMemberAdapter;
     private GroupMemberAdapter groupMemberAdapter;
+    private ApplyMemberAdapter applyMemberAdapter;
 
     private Retrofit retrofit;
 
@@ -61,6 +62,7 @@ public class GroupMemberActivity extends AppCompatActivity {
 
     private List<User> userDtos;
     private List<GroupMemberDto> groupMemberDtos;
+    private GroupRoomDto groupRoomDto;
 
     private Context mContext;
 
@@ -81,41 +83,42 @@ public class GroupMemberActivity extends AppCompatActivity {
         tvGroupMemberCount= findViewById(R.id.group_member_textview_count);
 
         Intent intent = getIntent();
-        grId =intent.getLongExtra("grId",0);
+        groupRoomDto= (GroupRoomDto) intent.getSerializableExtra("groupRoomDto");
+
+        grId= groupRoomDto.getGrId();
 
         initRetrofit();
 
-        // 리더일때 실행 ( 추후 )
+        // show apply member List when Login User is Reader
         if(isReader()) getGroupApplyMemberFromServer();
         getGroupMemberFromServer();
 
     }
     private boolean isReader()
     {
-        boolean result=true;
+        boolean result=false;
+        long loginUserId=0;
 
-        Gson gson = new Gson();
         String text= PreferenceManager.getString(getApplicationContext(), "user");
 
-        Log.d("json: ", text);
-        Log.d("json: ", text.toString());
-        User user =new User();
-//        Log.d("userdto: ", userdto.getUid()+"");
-        try {
-            JSONObject jsonObject = new JSONObject(text);
-            user.setUid(jsonObject.getLong("uid"));
-            user.setEmail(jsonObject.getString("email"));
-            user.setPassword(jsonObject.getString("password"));
-            user.setIntroduce(jsonObject.getString("introduce"));
-            user.setNickname(jsonObject.getString("nickname"));
-            //테스트 -> 유저클래스에 직접담거나, 타입에 맞는 곳에 직접넣어도됨
-            String name = jsonObject.getString("nickname");
-            Log.d("test: ","start");
+        Log.d("text: ",text);
+        int a= 0;
+        String val="";
+        try
+        {
+            JSONObject userJsonObject = new JSONObject(text);
 
-            Log.d("test: ",name);
-        } catch (JSONException e) {
+            val =userJsonObject.getString("uid");
+
+            a= Integer.valueOf(val);
+
+        } catch (JSONException |NumberFormatException e) {
             e.printStackTrace();
+            loginUserId= (long)Double.parseDouble(val);
         }
+
+        if(loginUserId == groupRoomDto.getUserDto().getUid()) result = true;
+        Log.d("test:", loginUserId+ " " + groupRoomDto.getUserDto().getUid());
 
         return result;
     }
@@ -143,6 +146,27 @@ public class GroupMemberActivity extends AppCompatActivity {
         adapterOnClick();
     }
 
+    private void getGroupMemberByUid(ApplyMemberDto applyMemberDto)
+    {
+        Call<APIMessage> getGroupMemberByUidCall = groupMemberService.getGroupMemberByUid(grId, applyMemberDto.getUid());
+        getGroupMemberByUidCall.enqueue(new Callback<APIMessage>() {
+            @Override
+            public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+                APIMessage apiMessage = response.body();
+                GroupMemberDto groupMemberDto = modelMapper.map(apiMessage.getData(), GroupMemberDto.class);
+                groupMemberAdapter.addGroupMemberItem(groupMemberDto);
+
+                tvGroupMemberCount.setText(groupMemberAdapter.getItemCount()+"");
+
+            }
+
+            @Override
+            public void onFailure(Call<APIMessage> call, Throwable t) {
+                Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // allow ApplyMember
     private void adapterOnClick()
     {
@@ -159,14 +183,12 @@ public class GroupMemberActivity extends AppCompatActivity {
                             String message = apiMessage.getMessage();
                             Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
 
-                            // remove Apply Member to list
+                            // remove Apply Member to AppliyMemberlist
                             applyMemberAdapter.removeApplyMemberItem(pos);
-
-                            // 후추 서버에서 가져오는거 예정
-//                            GroupMemberDto groupMemberDto= null;
-//                            groupMemberAdapter.addGroupMemberItem(groupMemberDto);
-
                             tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
+
+                            // 후추 서버에서 가져오는거, add group member to gourMemberList
+                            getGroupMemberByUid(applyMemberDto);
 
 //                            Intent intent= new Intent(mContext, GroupMemberActivity.class);
 //                            intent.putExtra("grId", grId);
@@ -189,7 +211,7 @@ public class GroupMemberActivity extends AppCompatActivity {
             public void onRefuseClick(ApplyMemberDto applyMemberDto, int pos) {
 
                 AlertDialog.Builder alertDig = new AlertDialog.Builder(GroupMemberActivity.this);
-                alertDig.setMessage("삭제하시겠습니까?").setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                alertDig.setMessage("거절하겠습니까?").setPositiveButton("거절", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //삭제하기
