@@ -18,11 +18,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아이디"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginRight="23dp"/>
         <EditText
             android:id="@+id/editId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:hint="Email"
             android:background="@drawable/border"/>
     </LinearLayout>
     <LinearLayout
@@ -34,12 +36,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
+            android:layout_marginRight="10dp"
             android:text="비밀번호"/>
         <EditText
             android:id="@+id/editPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:inputType="textPassword"
+            android:gravity="center"
+            android:hint="Password"
             android:background="@drawable/border"/>
     </LinearLayout>
 
@@ -52,16 +57,18 @@
         android:layout_marginRight="20dp">
         <Button
             android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_secondary_shape"
             android:text="회원가입"/>
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginRight="35dp"
+            android:background="@drawable/button_allow_shape"
             android:text="로그인"/>
     </LinearLayout>
     <ImageButton

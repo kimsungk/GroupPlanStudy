@@ -114,21 +114,24 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_gravity="right">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:gravity="right">
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_allow_shape"
             android:text="수정하기"/>
         <Button
             android:id="@+id/btnUpCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:background="@drawable/button_refuse_shape"
             android:text="취소"/>
     </LinearLayout>
 

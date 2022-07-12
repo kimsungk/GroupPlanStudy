@@ -15,7 +15,8 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
             <TextView
                 android:id="@+id/txMy"
                 android:layout_width="250dp"
@@ -29,6 +30,7 @@
                 android:id="@+id/btnMyPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rectangle"
                 android:layout_marginLeft="40dp"
                 android:text="MyPage"/>
         </LinearLayout>
