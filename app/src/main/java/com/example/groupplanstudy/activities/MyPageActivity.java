@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.groupplanstudy.Home;
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 
@@ -62,7 +63,8 @@ public class MyPageActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), Home.class);
+                startActivity(intent);
             }
         });
 

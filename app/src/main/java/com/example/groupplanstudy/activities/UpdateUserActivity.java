@@ -18,6 +18,8 @@ import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.LoginService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,9 +121,9 @@ public class UpdateUserActivity extends AppCompatActivity {
 
                 //수정할 데이터값 입력
                 final String upEmail = editUpEmail.getText().toString();
-                final String upIntroduce = editUpEmail.getText().toString();
-                final String upPassword = editUpEmail.getText().toString();
-                final String upNickname = editUpEmail.getText().toString();
+                final String upIntroduce = editUpMyIntro.getText().toString();
+                final String upPassword = editUpPassword.getText().toString();
+                final String upNickname = editUpNickName.getText().toString();
 
                 user = new User();
                 user.setUid(uid);
@@ -139,13 +141,19 @@ public class UpdateUserActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
                         if(response.isSuccessful()){
-                            finish();
+                            Intent intent = new Intent(getApplicationContext(), MyPageActivity.class);
+
                             Toast.makeText(getApplicationContext(),"회원수정이 완료되었습니다 다시 로그인 해주세요.",
                                     Toast.LENGTH_SHORT).show();
                             Log.d("response보기",response.body().getData().toString());
                             APIMessage apiMessage = new APIMessage();
                             apiMessage.setData(response.body().getData());
-                            PreferenceManager.setString(context,"user",apiMessage.getData().toString());
+
+                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+                            PreferenceManager.setString(context,"user",gson.toJson(apiMessage.getData()));
+
+                            startActivity(intent);
                         }
                     }
 
