@@ -12,51 +12,51 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupQnaDto;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.activities.GroupRoomActivity;
 
 import java.util.List;
 
-public class GroupRoomAdapter extends RecyclerView.Adapter<GroupRoomAdapter.GroupRoomHolder> {
+public class GroupRoomAdapter extends RecyclerView.Adapter<GroupRoomAdapter.GroupQnaHolder> {
 
-    private List<GroupQnaDto> groupQnaDto;
+    private List<GroupQnaDto> groupQnaDtos;
     private Context mContext;
 
-    public GroupRoomAdapter(Context mContext, List<GroupQnaDto> groupQnaDto) {
+    public GroupRoomAdapter(Context mContext, List<GroupQnaDto> groupQnaDtos) {
         this.mContext = mContext;
-        this.groupQnaDto = groupQnaDto;
+        this.groupQnaDtos = groupQnaDtos;
     }
 
     @NonNull
     @Override
-    public GroupRoomHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GroupQnaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.grouproomqna_write , parent, false);
-        return new GroupRoomAdapter.GroupRoomHolder(view);
+                .inflate(R.layout.item_grouproom , parent, false);
+        return new GroupRoomAdapter.GroupQnaHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupRoomAdapter.GroupRoomHolder holder, int position) {
-//        GroupRoomDto groupRoomDto= groupRoomDtos.get(position);
+    public void onBindViewHolder(@NonNull GroupRoomAdapter.GroupQnaHolder holder, int position) {
+        GroupQnaDto groupQnaDto= groupQnaDtos.get(position);
 
-//        holder.tvTitle.setText(groupRoomDto.getTitle());
-//        holder.tvIntro.setText(groupRoomDto.getIntroduce());
-//        holder.tvNickname.setText(groupRoomDto.getUserDto().getNickname());
-//        holder.tvLimit.setText(Integer.toString(groupRoomDto.getMemberLimit()));
+        holder.groupqna_title.setText(groupQnaDto.getTitle());
+        holder.groupqna_content.setText(groupQnaDto.getContent());
 
-//        clickGroupRoom(holder,groupRoomDto);
+
+        clickGroupQna(holder,groupQnaDto);
     }
-    private void clickGroupRoom(@NonNull GroupRoomAdapter.GroupRoomHolder holder, GroupRoomDto groupRoomDto){
+    private void clickGroupQna(@NonNull GroupQnaHolder holder, GroupQnaDto groupQnaDto){
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("grouproom: ",groupRoomDto.getGrId()+"");
+//                Log.d("grouproom: ",groupQnaDto.getGroupRoomDto()+"");
                 mContext = view.getContext();
 
                 // go to Group Room
                 Intent intent = new Intent(mContext, GroupRoomActivity.class);
-                intent.putExtra("grId", groupRoomDto.getGrId());
+                intent.putExtra("grId", groupQnaDto.getGroupRoomDto()+"");
                 mContext.startActivity(intent);
 
                 //temp
@@ -69,20 +69,29 @@ public class GroupRoomAdapter extends RecyclerView.Adapter<GroupRoomAdapter.Grou
 
     @Override
     public int getItemCount() {
-        return groupQnaDto==null?0:groupQnaDto.size();
+        return groupQnaDtos==null?0:groupQnaDtos.size();
     }
 
 
-    class GroupRoomHolder extends RecyclerView.ViewHolder{
-        private TextView tvTitle, tvIntro, tvNickname, tvLimit;
+    
+    //Qna 쓰기
+    public void addItem(GroupQnaDto body) {
+        groupQnaDtos.add(body);
 
-        public GroupRoomHolder(@NonNull View itemView) {
+        notifyDataSetChanged();
+    }
+
+
+    //리사이클러뷰
+    class GroupQnaHolder extends RecyclerView.ViewHolder{
+        private TextView groupqna_title, groupqna_content;
+
+        public GroupQnaHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvTitle = itemView.findViewById(R.id.opengroup_item_title);
-            tvIntro = itemView.findViewById(R.id.opengroup_item_intro);
-            tvNickname = itemView.findViewById(R.id.opengroup_item_nickname);
-            tvLimit = itemView.findViewById(R.id.opengroup_item_mem_limit);
+            groupqna_title = itemView.findViewById(R.id.groupqna_title);
+            groupqna_content = itemView.findViewById(R.id.groupqna_content);
+
         }
     }
 }

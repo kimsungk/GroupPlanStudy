@@ -5,7 +5,7 @@ import java.util.Date;
 public class GroupQnaDto {
     private Long bid;
 
-    private GroupRoomDto groupRoom;
+    private GroupRoomDto groupRoomDto;
 
     private User user;
 
@@ -14,9 +14,14 @@ public class GroupQnaDto {
 
     private Date regdate;
 
-    public GroupQnaDto(long bid, GroupRoomDto groupRoom, User user, String title, String content, Date regdate){
+    public  GroupQnaDto(){
+
+    }
+
+
+    public GroupQnaDto(long bid, GroupRoomDto groupRoomDto, User user, String title, String content, Date regdate){
         this.bid = bid;
-        this.groupRoom = groupRoom;
+        this.groupRoomDto = groupRoomDto;
         this.user = user;
         this.title = title;
         this.content = content;
@@ -32,12 +37,12 @@ public class GroupQnaDto {
         this.bid = bid;
     }
 
-    public GroupRoomDto getGroupRoom() {
-        return groupRoom;
+    public GroupRoomDto getGroupRoomDto() {
+        return groupRoomDto;
     }
 
-    public void setGroupRoom(GroupRoomDto groupRoom) {
-        this.groupRoom = groupRoom;
+    public void setGroupRoom(GroupRoomDto groupRoomDto) {
+        this.groupRoomDto = groupRoomDto;
     }
 
     public User getUser() {

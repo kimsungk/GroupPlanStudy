@@ -3,7 +3,9 @@ package com.example.groupplanstudy.Server.DTO;
 import com.example.groupplanstudy.Server.DTO.Applicable;
 import com.example.groupplanstudy.Server.DTO.User;
 
-public class GroupRoomDto
+import java.io.Serializable;
+
+public class GroupRoomDto implements Serializable
 {
     private long grId;
     private User user;

@@ -57,7 +57,8 @@ public class OpenGroupAdapter extends RecyclerView.Adapter<OpenGroupAdapter.Open
 
                 // go to Group Room
                 Intent intent = new Intent(mContext, GroupRoomActivity.class);
-                intent.putExtra("grId", groupRoomDto.getGrId());
+//                intent.putExtra("grId", groupRoomDto.getGrId());
+                intent.putExtra("groupRoomDto",groupRoomDto);
                 mContext.startActivity(intent);
 
                 //temp

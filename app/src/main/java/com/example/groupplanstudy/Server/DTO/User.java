@@ -1,6 +1,8 @@
 package com.example.groupplanstudy.Server.DTO;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private long uid;
     private String email;
     private String password;
