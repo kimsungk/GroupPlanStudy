@@ -23,10 +23,24 @@ public class PreferenceManager {
         editor.commit();
     }
 
-    //String 값 로드드
+    //String 값 로드
     public static String getString(Context context, String key) {
         SharedPreferences prefs = getPreferences(context);
         String value = prefs.getString(key, DEFAULT_VALUE_STRING);
+        return value;
+    }
+
+    //long 값 저장
+    public static void setLong(Context context, String key, long value) {
+        SharedPreferences prefs = getPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(key, value);
+        editor.commit();
+    }
+    //long 값 로드
+    public static long getLong(Context context, String key) {
+        SharedPreferences prefs = getPreferences(context);
+        long value = prefs.getLong(key, DEFAULT_VALUE_LONG);
         return value;
     }
 

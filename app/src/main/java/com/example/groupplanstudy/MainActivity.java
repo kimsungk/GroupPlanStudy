@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.groupplanstudy.DB.DBHelper;
+import com.example.groupplanstudy.DB.MyStudyDB;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     //내부클래스 MyDBHelper 는 DDL 작업(테이블 생성 등)을 수행하고
     //sqLiteDatabase DML 작업을 수행함
     DBHelper dbHelper = new DBHelper(this);
+    MyStudyDB myStudyDB = new MyStudyDB(this);
     private Context mContext;
 
 
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         //DB쓰기권한 업데이트
         sqLiteDatabase = dbHelper.getWritableDatabase();
+        dbHelper.onUpgrade(sqLiteDatabase,1,1);
+        sqLiteDatabase = myStudyDB.getWritableDatabase();
+        myStudyDB.onUpgrade(sqLiteDatabase,1,1);
         
         Button btnRegister = findViewById(R.id.btnRegister);
         Button btnLogin = findViewById(R.id.btnLogin);
