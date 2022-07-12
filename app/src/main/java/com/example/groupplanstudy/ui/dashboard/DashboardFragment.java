@@ -129,18 +129,20 @@ public class DashboardFragment extends Fragment {
     {
         diaryTextView.setText(readDay);
 
+        listView.setVisibility(View.VISIBLE);
+
         String getReadDay = readDay;
         ArrayList<String> resultList;//
         DBHelper dbHelper = new DBHelper(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         //날짜 체크비교 데이터 유무 판결
 
-        listView.setVisibility(View.VISIBLE);
         //textview2에는 저장되어있는 content 값넣기
         resultList = dbHelper.getResult(getReadDay,userid);
         adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, resultList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        setListViewHeightBasedOnChildren(listView);
 
         //클릭해서 수정
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,7 +214,6 @@ public class DashboardFragment extends Fragment {
                 return true;
             }
         });
-        setListViewHeightBasedOnChildren(listView);
     }
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();

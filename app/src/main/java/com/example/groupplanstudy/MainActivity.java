@@ -19,6 +19,10 @@ import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.LoginService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
                                 apiMessage.setMessage(response.body().getMessage());
                                 apiMessage.setData(response.body().getData());
 
-                                PreferenceManager.setString(mContext,"user",apiMessage.getData().toString());
+                                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                                Log.d("APIMessage",gson.toJson(apiMessage.getData()));
+
+                                PreferenceManager.setString(mContext,"user", gson.toJson(apiMessage.getData()));
 
                                 startActivity(intent);
                                 //데이터 넘기기

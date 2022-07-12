@@ -92,7 +92,7 @@ public class GroupMemberActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String text= PreferenceManager.getString(getApplicationContext(), "user");
 
-        Log.d("json: ", text);
+        Log.d("json: ", text.toString());
         User user =new User();
 //        Log.d("userdto: ", userdto.getUid()+"");
         try {
