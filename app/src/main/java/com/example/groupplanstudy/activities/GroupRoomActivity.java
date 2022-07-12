@@ -87,10 +87,18 @@ public class GroupRoomActivity extends AppCompatActivity {
         grId = groupRoomDto.getGrId();
 
         Log.d("groupRoomDto",groupRoomDto.toString());
-        //그룹방 정보 추가
 
+        //그룹방 정보 추가
         grouproom_name.setText(groupRoomDto.getTitle());
         grouproom_introduce.setText(groupRoomDto.getIntroduce());
+
+
+        //보내는 곳
+        // SerialObj serialObj = new SerialObj();
+        // 객체 생성
+        // Intent intent = new Intent(this, NextActivity.class);
+        // intent.putExtra("serialObj", serialObj);
+        // startActivity(intent);
 
 
 
