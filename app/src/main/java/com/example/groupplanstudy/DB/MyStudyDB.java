@@ -1,12 +1,15 @@
 package com.example.groupplanstudy.DB;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class MyStudyDB extends SQLiteOpenHelper {
     SQLiteDatabase sqLiteDatabase;
@@ -23,14 +26,22 @@ public class MyStudyDB extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    //학습시간 가져오기
-    public void studyList(long userid){
+    //학습시간 그룹 가져오기
+    public Cursor studyList(long userid){
         sqLiteDatabase = getReadableDatabase();
-        sqLiteDatabase.execSQL("select diffSec, title, content " +
-                "from myStudy where userid='"+userid+"'");
+
+        return sqLiteDatabase.rawQuery("select sum(diffSec) as studySec, title " +
+                "from myStudy where userid='"+userid+"' " +
+                "group by title order by studySec desc",null);
     }
 
+    //유저의 전체 학습시간 가져오기
+    public Cursor studyTotalList(long userid){
+        sqLiteDatabase = getReadableDatabase();
 
+        return sqLiteDatabase.rawQuery("select diffSec, title " +
+                "from myStudy where userid='"+userid+"'",null);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -40,8 +51,7 @@ public class MyStudyDB extends SQLiteOpenHelper {
                 "userid bigint, " +
                 "diffSec bigint, " +
                 "title varchar(500), " +
-                "content varchar(500));"
-        );
+                "content varchar(500));");
     }
 
     @Override

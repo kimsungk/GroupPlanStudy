@@ -49,11 +49,11 @@
                 android:text="총 학습시간"
                 android:textSize="25dp"/>
             <TextView
+                android:id="@+id/tvTotalTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="oo시간oo분"
                 android:textSize="30dp"/>
         </LinearLayout>
 
@@ -72,25 +72,33 @@
                 android:text="평균 학습시간"
                 android:textSize="25dp"/>
             <TextView
+                android:id="@+id/tvAvgTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="oo시간oo분"
                 android:textSize="30dp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:orientation="vertical"
             android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="25dp"
-                android:text="총 학습시간 ??시간??분"
+                android:text="학습 백분위"
                 android:gravity="center"/>
+            <TextView
+                android:id="@+id/tvGuide"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:gravity="center"
+                android:text="학습타이머를 실행해보세요!"/>
 
         </LinearLayout>
 
