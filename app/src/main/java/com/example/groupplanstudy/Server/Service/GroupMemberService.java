@@ -16,4 +16,8 @@ public interface GroupMemberService
 
     @GET("api/groupmember/groupMembers/{grId}/{uid}")
     Call<APIMessage> getGroupMemberByUid(@Path("grId") long grId, @Path("uid") long uid);
+
+    @GET("/api/groupmember/{uid}")
+    Call<APIMessage> getMyGroup(@Path("uid") long uid);
+
 }

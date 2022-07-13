@@ -9,6 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rectangle"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,13 +22,15 @@
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center"
                 android:background="@drawable/back" />
             <Button
                 android:id="@+id/btnUpdateUser"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/update"
-                android:layout_marginLeft="310dp" />
+                android:background="@drawable/update3"
+                android:layout_gravity="center"
+                android:layout_marginLeft="290dp" />
         </LinearLayout>
 
         <TextView
@@ -35,7 +41,7 @@
         <TextView
             android:id="@+id/tvNickname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
@@ -48,7 +54,7 @@
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
@@ -65,6 +71,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
+            android:layout_gravity="center"
             android:textSize="20dp"/>
 
         <TextView
@@ -76,14 +83,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:textSize="20dp"
+            android:gravity="center"
             android:text="참여 중이 그룹방"/>
-<!-- 내가들어간 그룹방 넣기 layout -->
+        <!-- 내가들어간 그룹방 넣기 layout -->
         <ListView
             android:id="@+id/listGroupRoom"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </ListView>
 
     </LinearLayout>
