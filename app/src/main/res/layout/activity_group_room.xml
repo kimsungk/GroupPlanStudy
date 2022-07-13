@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.GroupRoomActivity"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_gravity="center">
 
     <androidx.appcompat.widget.Toolbar
@@ -14,19 +15,28 @@
         android:layout_height="wrap_content"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+            android:text="가입신청"/>
+
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/grouproom_edge"
         android:layout_gravity="center"
+        android:background="@drawable/rectangle"
         android:layout_margin="10sp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:orientation="vertical">
 
             <TextView
@@ -39,13 +49,6 @@
                 android:textSize="20sp"
                 android:text="감자">
             </TextView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/grouproom_introduce"
@@ -74,14 +77,15 @@
             android:id="@+id/grouproom_floatBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginRight="10sp"
             android:layout_marginBottom="10sp"
-            android:layout_gravity="right"
+            android:backgroundTint="#2196F3"
             android:clickable="true"
-            app:srcCompat="@android:drawable/ic_input_add"/>
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/grouproom_recyclerView"
+            android:id="@+id/qnaboard_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center">
