@@ -23,6 +23,7 @@ import com.example.groupplanstudy.databinding.FragmentNotificationsBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -107,7 +108,7 @@ public class NotificationsFragment extends Fragment {
                     return;
                 }
                 
-                //시작하기 눌렀을 때 실행
+                //버튼이 시작하기 일경우
                 if (btnStuStart.getText().equals("시작하기")) {
                     
                     //현재시간을 가져와 초기화하여 넣기
@@ -172,10 +173,26 @@ public class NotificationsFragment extends Fragment {
                 }
                 //DB에 저장하기 -> 저장하고나서 내부저장 데이터 삭제하기
 
-                myStudyDB.insertTime(userid, tvStartTime.getText().toString(),
-                        tvEndTime.getText().toString(),
-                        editStudy.getText().toString(),
-                        editStudyContent.getText().toString());
+                String start = tvStartTime.getText().toString();
+                String end = tvEndTime.getText().toString();
+
+                try {
+                    Date format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(start);
+                    Date format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end);
+
+                    long diffSec = (format2.getTime() - format1.getTime())/1000; //초 차이 계산
+
+                    Log.d("초차이",String.valueOf(diffSec));
+
+                    //데이터 삽입
+                    myStudyDB.insertTime(userid, diffSec,
+                            editStudy.getText().toString(),
+                            editStudyContent.getText().toString());
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Toast.makeText(getContext(), "저장되었습니다.",Toast.LENGTH_SHORT).show();
 
                 //내부저장 데이터 삭제

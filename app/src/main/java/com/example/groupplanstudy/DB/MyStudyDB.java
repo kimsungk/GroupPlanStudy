@@ -16,14 +16,21 @@ public class MyStudyDB extends SQLiteOpenHelper {
     }
 
     //학습타이머 테이블 데이터 입력
-    public void insertTime(long userid, String startTime, String endTime, String title, String content){
+    public void insertTime(long userid, long diffSec, String title, String content){
         sqLiteDatabase = getWritableDatabase();
-        sqLiteDatabase.execSQL("insert into myStudy (userid,starttime,endtime,title,content) values" +
-                "('"+userid+"','"+startTime+"','"+endTime+"','"+title+"','"+content+"')");
+        sqLiteDatabase.execSQL("insert into myStudy (userid,diffSec,title,content) values" +
+                "('"+userid+"','"+diffSec+"','"+title+"','"+content+"')");
         sqLiteDatabase.close();
     }
 
-    //총학습시간
+    //학습시간 가져오기
+    public void studyList(long userid){
+        sqLiteDatabase = getReadableDatabase();
+        sqLiteDatabase.execSQL("select diffSec, title, content " +
+                "from myStudy where userid='"+userid+"'");
+    }
+
+
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -31,8 +38,7 @@ public class MyStudyDB extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("create table if not exists " +
                 "myStudy(id INTEGER primary key AUTOINCREMENT, " +
                 "userid bigint, " +
-                "starttime varchar(500), " +
-                "endtime varchar(500), " +
+                "diffSec bigint, " +
                 "title varchar(500), " +
                 "content varchar(500));"
         );
