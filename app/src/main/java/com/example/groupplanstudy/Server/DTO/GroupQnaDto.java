@@ -1,8 +1,9 @@
 package com.example.groupplanstudy.Server.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class GroupQnaDto {
+public class GroupQnaDto implements Serializable {
     private Long bid;
 
     private GroupRoomDto groupRoomDto;
