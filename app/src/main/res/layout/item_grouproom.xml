@@ -4,25 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/grouproom_edge"
-    android:layout_margin="5sp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:layout_gravity="center" >
 
     <TextView
         android:id="@+id/groupqna_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="감자"
+        android:text=""
+        android:layout_marginLeft="10dp"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"></TextView>
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"></TextView>
 
     <TextView
         android:id="@+id/groupqna_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="감자"
-        android:layout_marginBottom="5sp"
-        android:layout_gravity="center"></TextView>
+        android:layout_marginLeft="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text=""
+        android:layout_marginBottom="5sp"></TextView>
 
 
 
