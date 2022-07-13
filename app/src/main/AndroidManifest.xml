@@ -13,22 +13,31 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GroupPlanStudy"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.QnaBoardActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
             android:name=".activities.UpdateUserActivity"
-            android:exported="false" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"
+            />
         <activity
             android:name=".activities.GroupRoomActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activities.GroupMemberActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".activities.OpenGroupSearchedActivity"
             android:exported="true" />
-        <activity
-            android:name="com.example.groupplanstudy.activities.GroupMemberActivity"
-            android:exported="true"/>
-        <activity
-            android:name="com.example.groupplanstudy.activities.OpenGroupSearchedActivity"
-            android:exported="true"/>
         <activity
             android:name=".Home"
             android:exported="false"
@@ -38,10 +47,14 @@
             android:exported="false" />
         <activity
             android:name=".activities.MyPageActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
