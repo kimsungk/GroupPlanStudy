@@ -45,23 +45,14 @@ public class GroupRoomAdapter extends RecyclerView.Adapter<GroupRoomAdapter.Grou
         holder.groupqna_content.setText(groupQnaDto.getContent());
 
 
-        clickGroupQna(holder,groupQnaDto);
+        clickQnaBoard(holder,groupQnaDto);
     }
-    private void clickGroupQna(@NonNull GroupQnaHolder holder, GroupQnaDto groupQnaDto){
+
+    private void clickQnaBoard(@NonNull GroupQnaHolder holder, GroupQnaDto groupQnaDto){
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Log.d("grouproom: ",groupQnaDto.getGroupRoomDto()+"");
-                mContext = view.getContext();
 
-                // go to Group Room
-                Intent intent = new Intent(mContext, GroupRoomActivity.class);
-                intent.putExtra("grId", groupQnaDto.getGroupRoomDto()+"");
-                mContext.startActivity(intent);
-
-                //temp
-//                Intent intent= new Intent(mContext, GroupMemberActivity.class);
-//                mContext.startActivity(intent);
 
             }
         });

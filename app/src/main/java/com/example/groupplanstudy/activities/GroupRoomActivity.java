@@ -42,9 +42,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class GroupRoomActivity extends AppCompatActivity {
-    EditText groupqna_ettitle, groupqna_etcontent;
-    TextView grouproom_name, grouproom_introduce;
-    private RecyclerView grouproom_recyclerView;
+
+    private TextView grouproom_name, grouproom_introduce;
+    private RecyclerView qnaboard_recyclerView;
+    private FloatingActionButton grouproom_floatBtn;
+    private Toolbar toolbar;
 
     private Retrofit retrofit;
     private GroupRoomService groupRoomService;
@@ -55,14 +57,11 @@ public class GroupRoomActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
 
     private ModelMapper modelMapper = new ModelMapper();
-    private String query="";
 
     private Long grId;
-
     private User user;
 
     private GroupRoomDto groupRoomDto;
-    private String title, introduce;
 
 
     @Override
@@ -70,11 +69,9 @@ public class GroupRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_room);
 
-        grouproom_recyclerView = findViewById(R.id.grouproom_recyclerView);
+        qnaboard_recyclerView = findViewById(R.id.qnaboard_recyclerView);
 
-        FloatingActionButton grouproom_floatBtn = findViewById(R.id.grouproom_floatBtn);
-        groupqna_ettitle = findViewById(R.id.groupqna_ettitle);
-        groupqna_etcontent = findViewById(R.id.groupqna_etcontent);
+        grouproom_floatBtn = findViewById(R.id.grouproom_floatBtn);
 
         grouproom_name = findViewById(R.id.grouproom_name);
         grouproom_introduce = findViewById(R.id.grouproom_introduce);
@@ -101,7 +98,6 @@ public class GroupRoomActivity extends AppCompatActivity {
         // startActivity(intent);
 
 
-
         //uid 추가
         String text = PreferenceManager.getString(getApplicationContext(), "user");
         JSONObject jsonObject = null;
@@ -114,20 +110,23 @@ public class GroupRoomActivity extends AppCompatActivity {
         }
 
 
-
-        //툴바
-        Toolbar toolbar = findViewById(R.id.grouproom_toolbar);
+        toolbar = findViewById(R.id.grouproom_toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        onItemClickListeners();
 
 
         initRetrofit();
 
         getGrouQnasFromServer();
 
+        writeQnaBoard();
+    }
 
+    private void writeQnaBoard()
+    {
         //QnA 글쓰기
         grouproom_floatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +158,11 @@ public class GroupRoomActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<GroupQnaDto> call, Response<GroupQnaDto> response) {
                                 GroupQnaDto groupQnaDto= response.body();
+
+                                Intent intent = new Intent(getApplicationContext(), GroupRoomActivity.class);
+                                intent.putExtra("groupRoomDto",groupRoomDto);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
 
                             @Override
@@ -172,11 +176,8 @@ public class GroupRoomActivity extends AppCompatActivity {
                 dlg.show();
             }
         });
-
-
-
     }
-    
+
     //툴바 뒤로가기 버튼
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -194,9 +195,29 @@ public class GroupRoomActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_room_top_menu, menu);
-
         return true;
     }
+
+    private void onItemClickListeners()
+    {
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.grouproom_top_menu_member:
+                    Intent intent= new Intent(getApplicationContext(), GroupMemberActivity.class);
+                    intent.putExtra("groupRoomDto",groupRoomDto);
+                    startActivity(intent);
+                    break;
+                }
+
+                return true;
+            }
+        });
+    }
+
+
 
     //레트로핏
     private void initRetrofit(){
@@ -208,10 +229,12 @@ public class GroupRoomActivity extends AppCompatActivity {
     //리사이클러뷰
     private void setRecyclerView(List<GroupQnaDto> groupQnaDtos){
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        grouproom_recyclerView.setLayoutManager(linearLayoutManager);
+        qnaboard_recyclerView.setLayoutManager(linearLayoutManager);
 
         groupRoomAdapter= new GroupRoomAdapter(this,groupQnaDtos);
-        grouproom_recyclerView.setAdapter(groupRoomAdapter);
+        qnaboard_recyclerView.setAdapter(groupRoomAdapter);
+
+        qnaboard_recyclerView.scrollToPosition(groupRoomAdapter.getItemCount()-1);
     }
 
     //Qna 전체보기
