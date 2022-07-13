@@ -16,6 +16,7 @@ import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupQnaDto;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.activities.GroupRoomActivity;
+import com.example.groupplanstudy.activities.QnaBoardActivity;
 
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class GroupRoomAdapter extends RecyclerView.Adapter<GroupRoomAdapter.Grou
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent= new Intent(mContext, QnaBoardActivity.class);
+                intent.putExtra("groupQnaDto", groupQnaDto);
+                mContext.startActivity(intent);
 
             }
         });
