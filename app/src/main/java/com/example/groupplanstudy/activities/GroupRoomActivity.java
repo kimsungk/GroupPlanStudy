@@ -32,15 +32,23 @@ import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.ApplyMemberService;
+import com.example.groupplanstudy.Server.Service.GroupMemberService;
 import com.example.groupplanstudy.Server.Service.GroupRoomService;
+import com.example.groupplanstudy.ui.opengroup.dashboard.OpenGroupFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +66,7 @@ public class GroupRoomActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private GroupRoomService groupRoomService;
     private ApplyMemberService applyMemberService;
+    private GroupMemberService groupMemberService;
 
     private List<GroupQnaDto> groupQnaDtos;
     private GroupRoomAdapter groupRoomAdapter;
@@ -70,6 +79,7 @@ public class GroupRoomActivity extends AppCompatActivity {
     private User user;
 
     private GroupRoomDto groupRoomDto;
+    private Map<Long, GroupMemberDto> groupMemberDtoMap= new HashMap<>();
 
     private Context mContext;
 
@@ -114,6 +124,8 @@ public class GroupRoomActivity extends AppCompatActivity {
 
         initRetrofit();
 
+        getGroupMember();
+
         clickApplyButton();
         writeQnaBoard();
 
@@ -124,11 +136,87 @@ public class GroupRoomActivity extends AppCompatActivity {
     }
 
     //레트로핏
-    private void initRetrofit(){
+    private void initRetrofit()
+    {
         retrofit = Client.getClient();
 
         groupRoomService= retrofit.create(GroupRoomService.class);
         applyMemberService= retrofit.create(ApplyMemberService.class);
+        groupMemberService= retrofit.create(GroupMemberService.class);
+    }
+
+    private void getGroupMember()
+    {
+        Call<APIMessage> getGroupMemberCall = groupMemberService.getGroupMember(grId);
+        getGroupMemberCall.enqueue(new Callback<APIMessage>() {
+            @Override
+            public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                String jsonString= gson.toJson(response.body().getData());
+
+                Type memberListType = new TypeToken<ArrayList<GroupMemberDto>>(){}.getType();
+                ArrayList<GroupMemberDto> userArray = gson.fromJson(jsonString, memberListType);
+
+
+                for(GroupMemberDto gmd : userArray) {
+                    groupMemberDtoMap.put(gmd.getUid(),gmd);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<APIMessage> call, Throwable t) {
+                Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private boolean isGroupMember()
+    {
+        if(groupMemberDtoMap.containsKey(user.getUid())) return true;
+        else return false;
+    }
+
+    private void applyGroupRoom()
+    {
+        AlertDialog.Builder alertDig = new AlertDialog.Builder(GroupRoomActivity.this);
+        alertDig.setMessage("스터디 그룹에 가입하시겠습니까?").setPositiveButton("가입", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Call<APIMessage> applyGroupRoomCall = applyMemberService.applyGroupRoom(new ApplyMemberDto(grId,user.getUid()));
+                        applyGroupRoomCall.enqueue(new Callback<APIMessage>() {
+                            @Override
+                            public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+                                if(response.isSuccessful())
+                                {
+                                    APIMessage apiMessage = response.body();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupRoomActivity.this);
+
+                                    builder.setTitle("알림").setMessage(apiMessage.getMessage());
+
+                                    AlertDialog alertDialog = builder.create();
+
+                                    alertDialog.show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<APIMessage> call, Throwable t) {
+                                Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //취소하기
+                        dialogInterface.dismiss();
+                    }
+                });
+        alertDig.show();
     }
 
     private void clickApplyButton()
@@ -136,44 +224,7 @@ public class GroupRoomActivity extends AppCompatActivity {
         grouproomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDig = new AlertDialog.Builder(GroupRoomActivity.this);
-                alertDig.setMessage("스터디 그룹에 가입하시겠습니까?").setPositiveButton("가입", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Call<APIMessage> applyGroupRoomCall = applyMemberService.applyGroupRoom(new ApplyMemberDto(grId,user.getUid()));
-                                applyGroupRoomCall.enqueue(new Callback<APIMessage>() {
-                                    @Override
-                                    public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
-                                        if(response.isSuccessful())
-                                        {
-                                            APIMessage apiMessage = response.body();
-
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(GroupRoomActivity.this);
-
-                                            builder.setTitle("알림").setMessage(apiMessage.getMessage());
-
-                                            AlertDialog alertDialog = builder.create();
-
-                                            alertDialog.show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<APIMessage> call, Throwable t) {
-                                        Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //취소하기
-                                dialogInterface.dismiss();
-                            }
-                        });
-                alertDig.show();
+                applyGroupRoom();
             }
         });
     }
@@ -184,13 +235,18 @@ public class GroupRoomActivity extends AppCompatActivity {
         grouproom_floatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!isGroupMember()) {
+                    applyGroupRoom();
+                    return;
+                }
+
                 View dialogView = LayoutInflater.from(getApplicationContext())
                         .inflate(R.layout.grouproomqna_write, null);
 
                 final EditText groupqna_ettitle = dialogView.findViewById(R.id.groupqna_ettitle);
                 final EditText groupqna_etcontent = dialogView.findViewById(R.id.groupqna_etcontent);
                 AlertDialog.Builder dlg = new AlertDialog.Builder(GroupRoomActivity.this);
-                dlg.setTitle("등록");
+                dlg.setTitle("질문등록");
                 dlg.setView(dialogView);
                 dlg.setPositiveButton("등록", new DialogInterface.OnClickListener() {
                     @Override
@@ -231,38 +287,20 @@ public class GroupRoomActivity extends AppCompatActivity {
         });
     }
 
-    //툴바 뒤로가기 버튼
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    //툴바 팝업메뉴
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.group_room_top_menu, menu);
-        return true;
-    }
 
     private void onItemClickListeners()
     {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
                 switch (item.getItemId())
                 {
                     case R.id.grouproom_top_menu_member:
-                    Intent intent= new Intent(getApplicationContext(), GroupMemberActivity.class);
-                    intent.putExtra("groupRoomDto",groupRoomDto);
-                    startActivity(intent);
-                    break;
+                        Intent intent= new Intent(getApplicationContext(), GroupMemberActivity.class);
+                        intent.putExtra("groupRoomDto",groupRoomDto);
+                        startActivity(intent);
+                        break;
                 }
 
                 return true;
@@ -276,7 +314,7 @@ public class GroupRoomActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         qnaboard_recyclerView.setLayoutManager(linearLayoutManager);
 
-        groupRoomAdapter= new GroupRoomAdapter(this,groupQnaDtos);
+        groupRoomAdapter= new GroupRoomAdapter(this,groupQnaDtos, user.getUid(), groupMemberDtoMap);
         qnaboard_recyclerView.setAdapter(groupRoomAdapter);
 
         qnaboard_recyclerView.scrollToPosition(groupRoomAdapter.getItemCount()-1);
@@ -313,5 +351,25 @@ public class GroupRoomActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //툴바 뒤로가기 버튼
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //툴바 팝업메뉴
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.group_room_top_menu, menu);
+        return true;
     }
 }

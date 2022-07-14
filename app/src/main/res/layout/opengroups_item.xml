@@ -4,11 +4,11 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     android:id="@+id/opengroup_item_linearlayout"
-    android:layout_height="120dp"
+    android:layout_height="100dp"
     android:background="@drawable/shade">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="7dp"
@@ -18,7 +18,7 @@
         android:id="@+id/opengroup_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginBottom="5dp"
@@ -30,9 +30,10 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginBottom="10dp"
+        android:textSize="14sp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="opengroup_item_introopengroup_item_introopengroup_item_introopengroup_item_intro"/>
+        android:text=""/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,11 +45,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#9121F3"
+            android:textSize="14sp"
             android:layout_marginRight="20dp"
             android:text="nickname"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:text="멤버 정원 "
             />
         <TextView
