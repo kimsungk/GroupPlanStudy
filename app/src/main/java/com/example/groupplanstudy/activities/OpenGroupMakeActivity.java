@@ -156,9 +156,11 @@ public class OpenGroupMakeActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             Intent intent = new Intent(getApplicationContext(), GroupRoomActivity.class);
                             intent.putExtra("groupRoomDto",response.body());
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             Toast.makeText(getApplicationContext(), "그룹방 생성 완료", Toast.LENGTH_SHORT).show();
+
+                            groupRoomTitle.setText("");
+                            groupRoomIntroduce.setText("");
                         }
                     }
 
