@@ -1,24 +1,45 @@
 package com.example.groupplanstudy.Server.Adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Server.Client;
+import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.QnaBoardCommentDto;
+import com.example.groupplanstudy.Server.Service.QnaBoardCommentService;
+import com.example.groupplanstudy.activities.GroupMemberActivity;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoardHolder>
 {
     private List<QnaBoardCommentDto> qnaBoardCommentDtos;
+    private Activity activity;
+    private QnaBoardCommentService qnaBoardCommentService;
+    private long grId,bid;
 
-    public QnaBoardAdapter(List<QnaBoardCommentDto> qnaBoardCommentDtos) {
+    public QnaBoardAdapter(List<QnaBoardCommentDto> qnaBoardCommentDtos, Activity activity, long grId, long bid) {
         this.qnaBoardCommentDtos = qnaBoardCommentDtos;
+        this.activity = activity;
+        this.grId = grId;
+        this.bid = bid;
     }
 
     @NonNull
@@ -36,6 +57,62 @@ public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoa
         holder.tvNickname.setText(qnaBoardCommentDto.getUserDto().getNickname());
         holder.tvIntro.setText(qnaBoardCommentDto.getUserDto().getIntroduce());
         holder.tvComment.setText(qnaBoardCommentDto.getContent());
+
+        final int nPosition = position;
+        holder.tvComment.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                doUpdateOrDelete(grId,
+                       bid, qnaBoardCommentDto.getCid() , nPosition);
+                return false;
+            }
+        });
+    }
+
+    private void doUpdateOrDelete(long grId, long bid, long cid, int position)
+    {
+        AlertDialog.Builder alertDig = new AlertDialog.Builder(activity);
+        alertDig.setMessage("삭제하기").setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                removeComment(grId, bid, cid, position);
+            }
+        })
+        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //취소하기
+                dialogInterface.dismiss();
+            }
+        });
+        alertDig.show();
+    }
+
+    private void removeComment(long grId, long bid, long cid, int position)
+    {
+        qnaBoardCommentService = Client.getClient().create(QnaBoardCommentService.class);
+
+        Call<APIMessage> removeCommentCall = qnaBoardCommentService.deleteQnacommentByCid(grId, bid, cid);
+        removeCommentCall.enqueue(new Callback<APIMessage>() {
+            @Override
+            public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
+                Toast.makeText(activity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                qnaBoardCommentDtos.remove(position);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<APIMessage> call, Throwable t) {
+                Toast.makeText(activity, "네트워크 에러", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void addComment(QnaBoardCommentDto qnaBoardCommentDto)
+    {
+        qnaBoardCommentDtos.add(qnaBoardCommentDto);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -54,6 +131,7 @@ public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoa
             tvIntro = itemView.findViewById(R.id.qnaboard_item_tv_intro);
             tvComment = itemView.findViewById(R.id.qnaboard_item_tv_comment);
         }
+
 
     }
 }

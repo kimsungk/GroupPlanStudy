@@ -66,8 +66,32 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qnaboard_comments_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"/>
 
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="-50dp">
+
+        <EditText
+            android:id="@+id/qnaboard_comments_et_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:hint="메시지를 입력해주세요." />
+
+        <ImageButton
+            android:id="@+id/qnaboard_comments_imageButton_send"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/ic_menu_send"
+            />
+    </LinearLayout>
 
 
 
