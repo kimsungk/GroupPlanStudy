@@ -22,6 +22,9 @@ public interface GroupRoomService {
     @GET("/api/groom/{grId}/qnaboard")
     Call<APIMessage> getGroupQnaByGrId(@Path("grId") Long grId);
 
+    //GroupRoomDto 가져오기
+    @GET("/api/groom/{grId}")
+    Call<GroupRoomDto> getGroupRoom(@Path("grId") Long grId);
 
 
     //Qna 상세보기

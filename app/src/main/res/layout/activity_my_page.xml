@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginBottom="5dp"
     tools:context=".activities.MyPageActivity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,13 +25,19 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@drawable/back" />
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="MyPage"/>
             <Button
                 android:id="@+id/btnUpdateUser"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/update3"
-                android:layout_gravity="center"
-                android:layout_marginLeft="290dp" />
+                android:layout_gravity="center" />
         </LinearLayout>
 
         <TextView
@@ -84,15 +91,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:gravity="center"
-            android:text="참여 중이 그룹방"/>
+            android:text="참여 중인 그룹방"/>
         <!-- 내가들어간 그룹방 넣기 layout -->
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listGroupRoom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

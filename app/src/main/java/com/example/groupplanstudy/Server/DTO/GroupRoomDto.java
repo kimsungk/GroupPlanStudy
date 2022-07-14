@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class GroupRoomDto implements Serializable
 {
     private long grId;
-    private User user;
+    private User userDto;
     private String title;
     private String introduce;
     // OPEN , CLOSED
@@ -20,7 +20,7 @@ public class GroupRoomDto implements Serializable
 
     public GroupRoomDto(long grId, User user, String title, String introduce, Applicable applicable, int memberLimit) {
         this.grId = grId;
-        this.user = user;
+        this.userDto = user;
         this.title = title;
         this.introduce = introduce;
         this.applicable = applicable;
@@ -32,7 +32,7 @@ public class GroupRoomDto implements Serializable
     }
 
     public void setUserDto(User user) {
-        this.user = user;
+        this.userDto = user;
     }
 
     public void setTitle(String title) {
@@ -52,7 +52,7 @@ public class GroupRoomDto implements Serializable
     }
 
     public User getUserDto() {
-        return user;
+        return userDto;
     }
 
     public String getTitle() {

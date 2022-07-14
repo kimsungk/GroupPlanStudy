@@ -14,9 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.Home;
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Server.Adapter.MyGroupRoomAdapter;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.Applicable;
@@ -52,9 +55,13 @@ public class MyPageActivity extends AppCompatActivity {
     TextView tvNickname,tvEmail,tvIntroduce;
     private String nickname, email, introduce;
     Button btnUpdateUser, btnBack;
-    ListView listGroupRoom;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView recyclerView;
+    private MyGroupRoomAdapter myGroupRoomAdapter;
+
     long uid;
     List<GroupMemberDto2> groupMemberDto2List;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +78,7 @@ public class MyPageActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnUpdateUser = findViewById(R.id.btnUpdateUser);
 
-        listGroupRoom = findViewById(R.id.listGroupRoom);
+        recyclerView = findViewById(R.id.listGroupRoom);
 
         String text = PreferenceManager.getString(context, "user");
 
@@ -109,6 +116,8 @@ public class MyPageActivity extends AppCompatActivity {
 
                     try {
                         JSONArray jsonArray = new JSONArray(myGroup);
+                        Log.d("jsonarray",""+jsonArray.length());
+                        groupMemberDto2List = new ArrayList<>();
                         for(int i=0; i<jsonArray.length(); i++){
                             //subJsonObject가 하나의 member를 가진다
                             JSONObject subJsonObject = jsonArray.getJSONObject(i);
@@ -131,9 +140,10 @@ public class MyPageActivity extends AppCompatActivity {
                             groupRoom.setGrId(grId);
                             groupRoom.setTitle(title);
                             groupRoom.setIntroduce(introduce);
-                            if(applicable.equals(Applicable.OPEN)){
+
+                            if(applicable.equals("OPEN")){
                                 groupRoom.setApplicable(Applicable.OPEN);
-                            }else if(applicable.equals(Applicable.CLOSED)){
+                            }else if(applicable.equals("CLOSED")){
                                 groupRoom.setApplicable(Applicable.CLOSED);
                             }
                             groupRoom.setMemberLimit(memberLimit);
@@ -142,25 +152,27 @@ public class MyPageActivity extends AppCompatActivity {
                             GroupMemberDto2 groupMember = new GroupMemberDto2();
                             groupMember.setGmId(gmId);
                             groupMember.setUid(uid);
-                            if(role.equals(GroupRole.LEADER)){
+                            if(role.equals("LEADER")){
                                 groupMember.setRole(GroupRole.LEADER);
-                            }else if(role.equals(GroupRole.MEMBER)){
+                            }else if(role.equals("MEMBER")){
                                 groupMember.setRole(GroupRole.MEMBER);
                             }
-                            groupMember.setGroupRoomDto(groupRoom);
 
-                            groupMemberDto2List = new ArrayList<>();
+                            groupMember.setGroupRoomDto(groupRoom);
                             groupMemberDto2List.add(groupMember);
+
                         }
 
-                        Log.d(" "," "+groupMemberDto2List.get(0).getGroupRoomDto().getTitle());
 
-
+                        for (int i=0; i<groupMemberDto2List.size(); i++){
+                            Log.d(" "," "+groupMemberDto2List.get(i).getGroupRoomDto().getTitle());
+                        }
+                        //recycler view 넣기
+                        setMygroupRecyclerView(groupMemberDto2List);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }else{
                     Log.d("result","onResponse: 실패");
                 }
@@ -173,30 +185,6 @@ public class MyPageActivity extends AppCompatActivity {
         });
 
 //       Log.d(" "," "+groupMemberDto2List.get(0));
-
-
-
-        //참여 중인 그룹방 클릭
-        listGroupRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
-
-        //참여 중인 그룹방 삭제(자신이방장일경우에만)
-        listGroupRoom.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
-                return false;
-            }
-        });
-
-
-
 
         //유저 정보수정
         btnUpdateUser.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +203,12 @@ public class MyPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private void setMygroupRecyclerView(List<GroupMemberDto2> MyGroupList){
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
+        myGroupRoomAdapter = new MyGroupRoomAdapter(MyGroupList, MyPageActivity.this, context);
+        recyclerView.setAdapter(myGroupRoomAdapter);
     }
 }
