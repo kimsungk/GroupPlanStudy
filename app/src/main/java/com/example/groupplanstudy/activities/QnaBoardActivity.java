@@ -182,6 +182,8 @@ public class QnaBoardActivity extends AppCompatActivity {
                             QnaBoardCommentDto qnaBoardCommentDto = response.body();
                             qnaBoardAdapter.addComment(qnaBoardCommentDto);
                             etMessage.setText("");
+                            recyclerViewComment.scrollToPosition(qnaBoardAdapter.getItemCount()-1);
+
                         }
                     }
 
