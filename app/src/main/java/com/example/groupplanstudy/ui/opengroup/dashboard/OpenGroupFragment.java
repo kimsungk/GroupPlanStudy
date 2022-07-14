@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.groupplanstudy.R;
+import com.example.groupplanstudy.Register;
 import com.example.groupplanstudy.Server.Adapter.OpenGroupAdapter;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.Service.OpenGroupService;
+import com.example.groupplanstudy.activities.MyPageActivity;
+import com.example.groupplanstudy.activities.OpenGroupMakeActivity;
 import com.example.groupplanstudy.activities.OpenGroupSearchedActivity;
 import com.example.groupplanstudy.databinding.FragmentOpengroupBinding;
 
@@ -53,6 +58,10 @@ public class OpenGroupFragment extends Fragment {
 
     private ModelMapper modelMapper = new ModelMapper();
 
+    private Button opengroupmakebtn;
+    private GroupRoomDto groupRoomDto;
+    private Context rcontext;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         OpenGroupViewModel openGroupViewModel =
@@ -68,6 +77,11 @@ public class OpenGroupFragment extends Fragment {
         recyclerView = root.findViewById(R.id.opengroup_recyclerview);
         context = root.getContext();
 
+        opengroupmakebtn =root.findViewById(R.id.opengroupmakebtn);
+
+
+        OpenGroupMake(groupRoomDto);
+
 
         initRetrofit();
 
@@ -78,6 +92,21 @@ public class OpenGroupFragment extends Fragment {
 
         return root;
     }
+
+
+    private void OpenGroupMake(GroupRoomDto groupRoomDto) {
+        opengroupmakebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity().getApplicationContext(), OpenGroupMakeActibity.class);
+//                startActivity(intent);
+                Intent intent2= new Intent(getActivity().getApplicationContext(), OpenGroupMakeActivity.class);
+                intent2.putExtra("groupRoomDto", groupRoomDto);
+                startActivity(intent2);
+            }
+        });
+    }
+
 
     private void initRetrofit()
     {
@@ -151,6 +180,7 @@ public class OpenGroupFragment extends Fragment {
             }
         });
     }
+
 
 
     @Override

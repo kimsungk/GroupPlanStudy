@@ -9,6 +9,16 @@
     android:layout_marginBottom="70dp"
     >
 
+    <Button
+        android:id="@+id/opengroupmakebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle"
+        android:layout_marginRight="10sp"
+        android:layout_gravity="right"
+        android:text="방 만들기"/>
+
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/opengroup_search_view"
         android:layout_width="match_parent"
