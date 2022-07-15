@@ -3,6 +3,8 @@ package com.example.groupplanstudy.Server.Service;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.User;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -30,4 +32,7 @@ public interface LoginService {
     //로그인
     @POST("api/accounts/login")
     Call<APIMessage> loginUser(@Body User user);
+
+    @GET("api/accounts")
+    Call<List<User>> userList();
 }

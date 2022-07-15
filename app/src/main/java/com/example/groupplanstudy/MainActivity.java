@@ -20,9 +20,11 @@ import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.LoginService;
+import com.example.groupplanstudy.activities.AdminActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Call;
@@ -51,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.onUpgrade(sqLiteDatabase,1,1);
         sqLiteDatabase = myStudyDB.getWritableDatabase();
         myStudyDB.onUpgrade(sqLiteDatabase,1,1);
-        
+
         Button btnRegister = findViewById(R.id.btnRegister);
         Button btnLogin = findViewById(R.id.btnLogin);
         ImageButton btnGoogleLogin = findViewById(R.id.btnGoogleLogin);
 
         EditText editId = findViewById(R.id.editId);
         EditText editPassword = findViewById(R.id.editPassword);
-        
+
         //회원가입버튼
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             if(response.body().getMessage().equals("success")){
                                 Log.d("APIMessage",response.body().getMessage());
                                 Log.d("APIMessage",response.body().getData().toString());
-                                Intent intent = new Intent(getApplicationContext(), Home.class);
+
 
                                 APIMessage apiMessage = new APIMessage();
 
@@ -105,8 +107,24 @@ public class MainActivity extends AppCompatActivity {
 
                                 PreferenceManager.setString(mContext,"user", gson.toJson(apiMessage.getData()));
 
-                                startActivity(intent);
-                                //데이터 넘기기
+                                String userEmail = "";
+                                String textUser = PreferenceManager.getString(mContext,"user");
+
+                                try {
+                                    JSONObject jsonObject = new JSONObject(textUser);
+                                    userEmail = jsonObject.getString("email");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(userEmail.equals("admin")){
+                                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                    startActivity(intent);
+                                }else{
+                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    startActivity(intent);
+                                }
+
                             }
                         }else {
                             Toast.makeText(getApplicationContext(),

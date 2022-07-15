@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment {
         user = new User();
 
         tvGuide.setVisibility(View.INVISIBLE);
-        
 
         //JSON 파일 값 추출
         String text = PreferenceManager.getString(context, "user");
