@@ -27,7 +27,6 @@ import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.ApplyMemberService;
 import com.example.groupplanstudy.Server.Service.GroupMemberService;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +93,7 @@ public class GroupMemberActivity extends AppCompatActivity {
         getGroupMemberFromServer();
 
     }
+
     private boolean isReader()
     {
         boolean result=false;
@@ -118,7 +118,6 @@ public class GroupMemberActivity extends AppCompatActivity {
         }
 
         if(loginUserId == groupRoomDto.getUserDto().getUid()) result = true;
-        Log.d("test:", loginUserId+ " " + groupRoomDto.getUserDto().getUid());
 
         return result;
     }
@@ -157,7 +156,6 @@ public class GroupMemberActivity extends AppCompatActivity {
                 groupMemberAdapter.addGroupMemberItem(groupMemberDto);
 
                 tvGroupMemberCount.setText(groupMemberAdapter.getItemCount()+"");
-
             }
 
             @Override
@@ -183,19 +181,13 @@ public class GroupMemberActivity extends AppCompatActivity {
                             String message = apiMessage.getMessage();
                             Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
 
-                            // remove Apply Member to AppliyMemberlist
+                            // remove Apply Member to ApplyMemberlist
                             applyMemberAdapter.removeApplyMemberItem(pos);
                             tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
 
-                            // 후추 서버에서 가져오는거, add group member to gourMemberList
+                            // add group member to gourpMemberList
                             getGroupMemberByUid(applyMemberDto);
-
-//                            Intent intent= new Intent(mContext, GroupMemberActivity.class);
-//                            intent.putExtra("grId", grId);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            mContext.startActivity(intent);
                         }else{
-                            Log.d("result","실패");
                             Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -215,7 +207,6 @@ public class GroupMemberActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //삭제하기
-
                                 Call<APIMessage> refuseMemberCall = applyMemberService.refuseGroupMember(applyMemberDto);
                                 refuseMemberCall.enqueue(new Callback<APIMessage>() {
                                     @Override
@@ -229,7 +220,6 @@ public class GroupMemberActivity extends AppCompatActivity {
                                             applyMemberAdapter.removeApplyMemberItem(pos);
                                             tvApplyMemberCount.setText(applyMemberAdapter.getItemCount()+"");
                                         }else{
-                                            Log.d("result","실패");
                                             Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -238,8 +228,8 @@ public class GroupMemberActivity extends AppCompatActivity {
                                     public void onFailure(Call<APIMessage> call, Throwable t) {
                                         Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
                                     }
-                                });
-                            }// 승인 거절 서버 통신
+                                });// 승인 거절 서버 통신
+                            }
 
                         })
                         .setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -250,8 +240,6 @@ public class GroupMemberActivity extends AppCompatActivity {
                             }
                         });
                 alertDig.show();
-
-
             }
         });
     }
@@ -284,14 +272,13 @@ public class GroupMemberActivity extends AppCompatActivity {
                     }
                     setApplyMemberAndRecyclerView(userDtos);
                 } else{
-                    Log.d("result","onResponse: 실패");
+                    Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<APIMessage> call, Throwable t) {
-                Log.d("result","실패: "+t.getMessage());
-
+                Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -313,14 +300,13 @@ public class GroupMemberActivity extends AppCompatActivity {
                     }
                     setGroupMemberRecyclerView(groupMemberDtos);
                 } else{
-                    Log.d("result","onResponse: 실패");
+                    Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<APIMessage> call, Throwable t) {
-                Log.d("resultag","실패: "+t.getMessage());
-
+                Toast.makeText(mContext, "네트워크 에러", Toast.LENGTH_SHORT).show();
             }
         });
     }

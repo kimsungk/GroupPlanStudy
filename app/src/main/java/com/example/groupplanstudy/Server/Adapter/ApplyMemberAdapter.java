@@ -79,18 +79,6 @@ public class ApplyMemberAdapter extends RecyclerView.Adapter<ApplyMemberAdapter.
         final int sPosition= position;
 
         holder.tvNickname.setText(userDto.getNickname());
-//        holder.btnAllow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                allowApplyMemberToServer(applyMemberDto,sPosition);
-//            }
-//        });
-//        holder.btnRefuse.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                refuseApplyMemberToServer(applyMemberDto,sPosition);
-//            }
-//        });
     }
 
     // 신청멤버에 - 1,
@@ -112,7 +100,6 @@ public class ApplyMemberAdapter extends RecyclerView.Adapter<ApplyMemberAdapter.
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mContext.startActivity(intent);
                 }else{
-                    Log.d("result","실패");
                     Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -140,7 +127,6 @@ public class ApplyMemberAdapter extends RecyclerView.Adapter<ApplyMemberAdapter.
                     applyUserDtos.remove(position);
                     notifyDataSetChanged();
                 }else{
-                    Log.d("result","실패");
                     Toast.makeText(mContext, "실패", Toast.LENGTH_SHORT).show();
                 }
             }

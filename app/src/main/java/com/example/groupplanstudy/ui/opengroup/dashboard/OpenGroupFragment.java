@@ -60,7 +60,6 @@ public class OpenGroupFragment extends Fragment {
 
     private Button opengroupmakebtn;
     private GroupRoomDto groupRoomDto;
-    private Context rcontext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,9 +69,7 @@ public class OpenGroupFragment extends Fragment {
         binding = FragmentOpengroupBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textOpengroup;
-//        openGroupViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
+        groupRoomDto= new GroupRoomDto();
         searchView = root.findViewById(R.id.opengroup_search_view);
         recyclerView = root.findViewById(R.id.opengroup_recyclerview);
         context = root.getContext();
@@ -80,7 +77,6 @@ public class OpenGroupFragment extends Fragment {
         opengroupmakebtn =root.findViewById(R.id.opengroupmakebtn);
 
 
-        OpenGroupMake(groupRoomDto);
 
 
         initRetrofit();
@@ -90,16 +86,17 @@ public class OpenGroupFragment extends Fragment {
 
         doSeachOpenGroup();
 
+        clickMakeOpenGroup(groupRoomDto);
+
+
         return root;
     }
 
 
-    private void OpenGroupMake(GroupRoomDto groupRoomDto) {
+    private void clickMakeOpenGroup(GroupRoomDto groupRoomDto) {
         opengroupmakebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity().getApplicationContext(), OpenGroupMakeActibity.class);
-//                startActivity(intent);
                 Intent intent2= new Intent(getActivity().getApplicationContext(), OpenGroupMakeActivity.class);
                 intent2.putExtra("groupRoomDto", groupRoomDto);
                 startActivity(intent2);
@@ -110,10 +107,6 @@ public class OpenGroupFragment extends Fragment {
 
     private void initRetrofit()
     {
-//        retrofit= new Retrofit.Builder()
-//                .baseUrl("http://192.168.45.243:8866")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
         retrofit = Client.getClient();
 
         openGroupService= retrofit.create(OpenGroupService.class);
@@ -166,7 +159,6 @@ public class OpenGroupFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("search :" , query);
                 // call OpenGroupSearchedActivity
                 Intent intent = new Intent(getActivity(), OpenGroupSearchedActivity.class);
                 intent.putExtra("query", query);

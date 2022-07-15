@@ -2,9 +2,7 @@ package com.example.groupplanstudy.Server.Adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +17,12 @@ import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.QnaBoardCommentDto;
 import com.example.groupplanstudy.Server.Service.QnaBoardCommentService;
-import com.example.groupplanstudy.activities.GroupMemberActivity;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoardHolder>
 {

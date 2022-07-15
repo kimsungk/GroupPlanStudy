@@ -23,12 +23,8 @@ import com.example.groupplanstudy.Server.Adapter.QnaBoardAdapter;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
 import com.example.groupplanstudy.Server.DTO.GroupQnaDto;
-import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.QnaBoardCommentDto;
-import com.example.groupplanstudy.Server.DTO.User;
-import com.example.groupplanstudy.Server.Service.ApplyMemberService;
-import com.example.groupplanstudy.Server.Service.GroupMemberService;
 import com.example.groupplanstudy.Server.Service.QnaBoardCommentService;
 
 import org.json.JSONException;
@@ -59,7 +55,6 @@ public class QnaBoardActivity extends AppCompatActivity {
     private ModelMapper modelMapper = new ModelMapper();
 
     private List<QnaBoardCommentDto> qnaBoardCommentDtoList;
-    private Context mContext;
 
 
     @Override
@@ -83,7 +78,6 @@ public class QnaBoardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mContext = QnaBoardActivity.this;
 
         initRetrofit();
         getQnaBoardCommentsFromServer();
@@ -103,7 +97,6 @@ public class QnaBoardActivity extends AppCompatActivity {
 
         String text= PreferenceManager.getString(getApplicationContext(), "user");
 
-        Log.d("text: ",text);
         int a= 0;
         String val="";
         try
@@ -146,7 +139,7 @@ public class QnaBoardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<APIMessage> call, Throwable t) {
-                Log.d("result","실패: "+t.getMessage());
+                Toast.makeText(getApplicationContext(), "네트워크 에러", Toast.LENGTH_SHORT).show();
             }
         });
     }
