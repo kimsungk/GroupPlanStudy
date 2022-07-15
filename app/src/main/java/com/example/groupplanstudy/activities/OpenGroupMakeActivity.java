@@ -22,7 +22,6 @@ import com.example.groupplanstudy.Server.DTO.GroupRoomDto;
 import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.User;
 import com.example.groupplanstudy.Server.Service.OpenGroupService;
-import com.example.groupplanstudy.ui.opengroup.dashboard.OpenGroupFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -155,7 +154,7 @@ public class OpenGroupMakeActivity extends AppCompatActivity {
                     public void onResponse(Call<GroupRoomDto> call, Response<GroupRoomDto> response) {
                         if (response.isSuccessful()) {
                             Intent intent = new Intent(getApplicationContext(), GroupRoomActivity.class);
-                            intent.putExtra("groupRoomDto",response.body());
+                            intent.putExtra("groupRoomDto", response.body());
                             startActivity(intent);
                             Toast.makeText(getApplicationContext(), "그룹방 생성 완료", Toast.LENGTH_SHORT).show();
 

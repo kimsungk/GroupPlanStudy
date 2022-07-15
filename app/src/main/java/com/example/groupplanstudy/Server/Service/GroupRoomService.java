@@ -16,7 +16,7 @@ public interface GroupRoomService {
 
     //Qna 글쓰기
     @POST("/api/groom/{grId}/qnaboard/{uid}")
-    Call<GroupQnaDto> writeQna(@Body GroupQnaDto groupQnaDto,@Path("grId")Long grId,@Path("uid") long uid);
+    Call<GroupQnaDto> writeQna(@Body GroupQnaDto groupQnaDto, @Path("grId") Long grId, @Path("uid") long uid);
 
     //Qna 전체보기
     @GET("/api/groom/{grId}/qnaboard")
@@ -26,7 +26,4 @@ public interface GroupRoomService {
     @GET("/api/groom/{grId}")
     Call<GroupRoomDto> getGroupRoom(@Path("grId") Long grId);
 
-
-    //Qna 상세보기
-//    @GET("/{grId}/qnaboard/{bid}")
 }

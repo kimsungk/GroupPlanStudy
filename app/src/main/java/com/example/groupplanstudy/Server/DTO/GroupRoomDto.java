@@ -5,8 +5,7 @@ import com.example.groupplanstudy.Server.DTO.User;
 
 import java.io.Serializable;
 
-public class GroupRoomDto implements Serializable
-{
+public class GroupRoomDto implements Serializable {
     private long grId;
     private User userDto;
     private String title;

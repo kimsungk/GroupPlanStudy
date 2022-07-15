@@ -4,42 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.dashboard.DashboardFragment"
     android:layout_marginBottom="70dp"
-    >
+    android:orientation="vertical"
+    tools:context=".ui.dashboard.DashboardFragment">
 
     <Button
         android:id="@+id/opengroupmakebtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle"
-        android:layout_marginRight="10sp"
         android:layout_gravity="right"
-        android:text="방 만들기"/>
+        android:layout_marginRight="10sp"
+        android:background="@drawable/rectangle"
+        android:text="방 만들기" />
 
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/opengroup_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:iconifiedByDefault="false"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         app:queryHint="찾고 싶은 방제목을 입력하세요." />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/opengroup_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/opengroup_recyclerview"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        />
-
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp" />
 
 
 </LinearLayout>
