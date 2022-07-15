@@ -3,6 +3,7 @@ package com.example.groupplanstudy.Server.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.groupplanstudy.R;
 import com.example.groupplanstudy.Server.Client;
 import com.example.groupplanstudy.Server.DTO.APIMessage;
+import com.example.groupplanstudy.Server.DTO.PreferenceManager;
 import com.example.groupplanstudy.Server.DTO.QnaBoardCommentDto;
 import com.example.groupplanstudy.Server.Service.QnaBoardCommentService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -30,12 +35,14 @@ public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoa
     private Activity activity;
     private QnaBoardCommentService qnaBoardCommentService;
     private long grId,bid;
+    private long uid;
 
     public QnaBoardAdapter(List<QnaBoardCommentDto> qnaBoardCommentDtos, Activity activity, long grId, long bid) {
         this.qnaBoardCommentDtos = qnaBoardCommentDtos;
         this.activity = activity;
         this.grId = grId;
         this.bid = bid;
+        uid = getUid();
     }
 
     @NonNull
@@ -58,11 +65,34 @@ public class QnaBoardAdapter extends RecyclerView.Adapter<QnaBoardAdapter.QnaBoa
         holder.tvComment.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                doUpdateOrDelete(grId,
-                       bid, qnaBoardCommentDto.getCid() , nPosition);
+                if(uid == qnaBoardCommentDto.getUserDto().getUid())
+                    doUpdateOrDelete(grId, bid, qnaBoardCommentDto.getCid() , nPosition);
                 return false;
             }
         });
+    }
+
+    private long getUid()
+    {
+        long loginUserId=0;
+
+        String text= PreferenceManager.getString(activity, "user");
+
+        int a= 0;
+        String val="";
+        try
+        {
+            JSONObject userJsonObject = new JSONObject(text);
+
+            val =userJsonObject.getString("uid");
+
+            a= Integer.valueOf(val);
+
+        } catch (JSONException |NumberFormatException e) {
+            e.printStackTrace();
+            loginUserId= (long)Double.parseDouble(val);
+        }
+        return loginUserId;
     }
 
     private void doUpdateOrDelete(long grId, long bid, long cid, int position)
